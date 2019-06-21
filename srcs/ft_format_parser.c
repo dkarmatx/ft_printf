@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:11:47 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/21 20:16:41 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/06/21 20:40:56 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,6 @@ char		*format_parser(char *spec, t_frmt_fs *frmt, va_list arg)
 	spec = flag_parser(spec, frmt);
 	spec = wp_parser(spec, frmt, arg);
 	spec = type_parser(spec, frmt);
+	frmt->spec = *(spec - 1);
 	return (spec);
 }

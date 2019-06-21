@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/21 20:14:43 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/06/21 20:41:03 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ typedef struct		s_flags_specifier
 	int				size;
 	int				field_len;
 	int				precision;
-	char			base;
 	char			orient;
 	char			zerofill;
 	char			asteriks;
 	char			sharp;
 	char			sign;
 	char			ispre;
+	char			spec;
 }					t_frmt_fs;
 
 int			ft_printf(const char *format, ...);
@@ -49,5 +49,11 @@ int			ft_printf(const char *format, ...);
 */
 
 char		*format_parser(char *spec, t_frmt_fs *frmt, va_list arg);
+
+/*
+** INSERTING FUNCTIONS
+*/
+
+size_t		insert_spec(t_frmt_fs *frmt, va_list arg);
 
 #endif

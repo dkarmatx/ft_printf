@@ -6,14 +6,12 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/20 08:36:19 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/06/21 20:05:16 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFTPRINTF_H
 # define LIBFTPRINTF_H
-
-# define BUFF_OUT_SIZE 1024 * 1024 * 2
 
 /*
 ** bufflen - Размер буфера вывода для int. для float количество символов слева

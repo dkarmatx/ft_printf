@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:10:55 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/20 09:16:59 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/06/21 20:05:28 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,17 +133,6 @@ int		ft_printf(const char *format, ...)
 	write(1, inputer[0], n[0]);
 	va_end(arg);
 	return ((int)(n[1] + n[0]));
-}
-
-int		main(void)
-{
-	printf(" <- %d\n", ft_printf("a%dbcd", 14));
-	printf(" <- %d\n", ft_printf("a%lldbcd", 14));
-	printf(" <- %d\n", ft_printf("a%lllllllllllllhhhlldbcd", 14));
-	printf(" <- %d\n", ft_printf("%zu", 14));
-	printf(" <- %d\n", ft_printf("%f", 14));
-	printf(" <- %d\n", ft_printf("%c", 14));
-	return (0);
 }
 
 /*

@@ -6,12 +6,15 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/21 20:05:16 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/06/21 20:14:43 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFTPRINTF_H
 # define LIBFTPRINTF_H
+
+# include <stdarg.h>
+# include "libft.h"
 
 /*
 ** bufflen - Размер буфера вывода для int. для float количество символов слева
@@ -40,5 +43,11 @@ typedef struct		s_flags_specifier
 }					t_frmt_fs;
 
 int			ft_printf(const char *format, ...);
+
+/*
+** FORMAT PARSER FUCNTIONS
+*/
+
+char		*format_parser(char *spec, t_frmt_fs *frmt, va_list arg);
 
 #endif

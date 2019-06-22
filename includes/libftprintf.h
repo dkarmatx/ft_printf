@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libftprintf.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/21 20:59:56 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/06/22 07:44:43 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,24 @@ char		*format_parser(char *spec, t_frmt_fs *frmt, va_list arg);
 */
 
 size_t		insert_spec(t_frmt_fs *frmt, va_list arg);
+
+/*
+** INSERT STRING
+*/
+
+size_t		ft_insert_s(t_frmt_fs *frmt, va_list arg);
+
+/*
+** INSERT CHAR
+*/
+
+int			ft_insert_c(t_frmt_fs *frmt, va_list arg);
+
+/*
+** втсавляем чар н раз если н > лен
+*/
+
+void		ft_putchar_n(char c, int n, size_t len);
+
 
 #endif

@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_insert_spec.c                                   :+:      :+:    :+:   */
+/*   ft_insert_c.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/21 20:53:55 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/22 01:33:00 by gdaemoni         ###   ########.fr       */
+/*   Created: 2019/06/22 01:30:42 by gdaemoni          #+#    #+#             */
+/*   Updated: 2019/06/22 08:25:47 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "libftprintf.h"
 
-size_t		insert_spec(t_frmt_fs *frmt, va_list arg)
+int			ft_insert_c(t_frmt_fs *f, va_list arg)
 {
-	if (frmt->type == 1)
-		return (0);
-	else if (frmt->type == 2)
-		return (0);
-	else if (frmt->type == 3)
-		return (ft_insert_s(frmt, arg));
-	else if (frmt->type == 4)
-		return (ft_insert_c(frmt, arg));
-	else if (frmt->type == 5)
-		return (0);
+	char	c;
+	size_t	size;
+	
+	size = f->field_len;
+	c = va_arg(arg, int);
+	if (!f->orient)
+	{
+		ft_putchar_n(f->zerofill ? '0' : ' ', size - 1, 0);
+		write(1, &c, 1);
+	}
 	else
-		return (0);
+	{
+		write(1, &c, 1);
+		ft_putchar_n(f->zerofill ? '0' : ' ', size - 1, 0);
+	}
+	return (size ? size : 1);
 }

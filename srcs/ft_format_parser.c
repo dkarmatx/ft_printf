@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_format_parser.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:11:47 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/21 20:40:56 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/06/22 02:55:13 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
+
+int		ft_abc(int n)
+{
+	return (n < 0 ? n * -1 : n);
+}
 
 static char	*flag_parser(char *spec, t_frmt_fs *frmt)
 {
@@ -36,16 +41,16 @@ static char	*flag_parser(char *spec, t_frmt_fs *frmt)
 static char	*wp_parser(char *spec, t_frmt_fs *frmt, va_list arg)
 {
 	if (*spec == '*' && spec++)
-		frmt->field_len = va_arg(arg, int);
-	else if ((frmt->field_len = ft_atoi(spec)))
+		frmt->field_len = ft_abc(va_arg(arg, int));
+	else if ((frmt->field_len = ft_abc(ft_atoi(spec))))
 		while (ft_isdigit(*spec))
 			spec++;
 	if (*spec == '.')
 	{
 		frmt->ispre = 1;
 		if (*(++spec) == '*' && spec++)
-			frmt->precision = va_arg(arg, int);
-		else if ((frmt->precision = ft_atoi(spec)))
+			frmt->precision = ft_abc(va_arg(arg, int));
+		else if ((frmt->precision = ft_abc(ft_atoi(spec))))
 			while (ft_isdigit(*spec))
 				spec++;
 	}

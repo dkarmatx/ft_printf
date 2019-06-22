@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 11:52:11 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/22 11:57:41 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/06/22 15:47:03 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,19 @@ typedef unsigned char	t_1b;
 
 typedef struct			s_longnumber
 {
-	t_8b				mantissa[64];
+	t_8b				mnt[64];
 	t_4b				exponent;
 	t_1b				sign;
 }						t_lnum;
+
+long double		ln_to_ldouble(t_lnum lnum);
+t_lnum			ln_multen_mnt(t_lnum n1);
+t_lnum			ln_sub_mnt(t_lnum n1, t_lnum n2);
+t_lnum			ln_summ_mnt(t_lnum n1, t_lnum n2);
+int				ln_cmp(t_lnum n1, t_lnum n2);
+int				ln_abscmp(t_lnum n1, t_lnum n2);
+t_lnum			ln_lowshift(t_lnum num, t_4b shift);
+t_lnum			ln_lowshift_mnt(t_lnum num, t_4b shift);
+t_lnum			ln_from_ldouble(long double ldob);
 
 #endif

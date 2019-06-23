@@ -6,14 +6,14 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 21:22:03 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/23 13:03:48 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/23 13:24:35 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "libftprintf.h"
 
-void		ft_putchar_n(char c, int n)
+void			ft_putchar_n(char c, int n)
 {
 	if (n > 0)
 	{
@@ -25,7 +25,7 @@ void		ft_putchar_n(char c, int n)
 	}
 }
 
-size_t		ft_print_str(t_frmt_fs *f, size_t len, size_t size, char *str)
+static size_t	ft_print_str(t_frmt_fs *f, size_t len, size_t size, char *str)
 {
 	if (!f->orient)
 	{
@@ -47,7 +47,7 @@ size_t		ft_print_str(t_frmt_fs *f, size_t len, size_t size, char *str)
 		return (f->precision);
 }
 
-size_t		ft_insert_s(t_frmt_fs *f, va_list arg)
+size_t			ft_insert_s(t_frmt_fs *f, va_list arg)
 {
 	char	*str;
 	size_t	len;

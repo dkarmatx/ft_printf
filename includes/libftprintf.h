@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/23 10:56:29 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/23 13:38:04 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,16 @@ size_t		ft_insert_s(t_frmt_fs *frmt, va_list arg);
 int			ft_insert_c(t_frmt_fs *frmt, va_list arg);
 
 /*
-** втсавляем чар н раз если н > лен
+** втсавляем чар н раз
 */
 
 void		ft_putchar_n(char c, int n);
+
+/*
+** INSERT B
+*/
+
+int			ft_insert_b(t_frmt_fs *frmt, va_list arg);
 
 
 #endif

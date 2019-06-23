@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/22 07:44:43 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/23 10:56:29 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int			ft_insert_c(t_frmt_fs *frmt, va_list arg);
 ** втсавляем чар н раз если н > лен
 */
 
-void		ft_putchar_n(char c, int n, size_t len);
+void		ft_putchar_n(char c, int n);
 
 
 #endif

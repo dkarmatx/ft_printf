@@ -6,16 +6,16 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 21:22:03 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/22 08:03:22 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/23 13:03:48 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "libftprintf.h"
 
-void		ft_putchar_n(char c, int n, size_t len)
+void		ft_putchar_n(char c, int n)
 {
-	if (n > 0 && n > len)
+	if (n > 0)
 	{
 		while (n)
 		{
@@ -23,6 +23,28 @@ void		ft_putchar_n(char c, int n, size_t len)
 			n--;
 		}
 	}
+}
+
+size_t		ft_print_str(t_frmt_fs *f, size_t len, size_t size, char *str)
+{
+	if (!f->orient)
+	{
+		ft_putchar_n(f->zerofill ? '0' : ' ',
+		f->precision > len || !f->ispre ? size - len : size - f->precision);
+		write(1, str, f->ispre && f->precision < len ? f->precision : len);
+	}
+	else
+	{
+		write(1, str, f->ispre && f->precision < len ? f->precision : len);
+		ft_putchar_n(f->zerofill ? '0' : ' ',
+		f->precision > len || !f->ispre ? size - len : size - f->precision);
+	}
+	if (size >= len)
+		return (size);
+	else if (!f->ispre || len < f->precision)
+		return (len);
+	else
+		return (f->precision);
 }
 
 size_t		ft_insert_s(t_frmt_fs *f, va_list arg)
@@ -33,23 +55,13 @@ size_t		ft_insert_s(t_frmt_fs *f, va_list arg)
 
 	str = va_arg(arg, char*);
 	size = f->field_len;
-	if (f->ispre == 1 && !f->precision)
+	if (f->ispre && !f->precision)
 	{
-		ft_putchar_n(f->zerofill ? '0' : ' ', size, 0);
+		ft_putchar_n(f->zerofill ? '0' : ' ', size);
 		return (size);
 	}
+	if (!str)
+		str = ft_strsub("(null)", 0, 6);
 	len = ft_strlen(str);
-	if (!f->orient)
-	{
-		ft_putchar_n(f->zerofill ? '0' : ' ',
-		!f->ispre ? size - len : size - f->precision, len);
-		write(1, str, f->ispre == 1 ? f->precision : len);
-	}
-	else
-	{
-		write(1, str, f->ispre == 1 ? f->precision : len);
-		ft_putchar_n(f->zerofill ? '0' : ' ',
-		!f->ispre ? size - len : size - f->precision, len);
-	}
-	return (size && size > f->precision ? size > len ? size : len : f->ispre ? f->precision : len);
+	return (ft_print_str(f, len, size, str));
 }

@@ -28,17 +28,44 @@ t_lnum			ln_lowshift_mnt(t_lnum num, t_4b shift)
 	ft_bzero(sup, sizeof(sup));
 	bytes = shift / 64;
 	bits = shift % 64;
-	i = 64;
 	ft_memcpy(&(sup[64 - bytes]), num.mnt, 512);
 	ft_memcpy(num.mnt, &(sup[64]), 512);
-	sup[1] = 0;
-	while (i--)
+	i = 0;
+	while (i < 64)
 	{
-		num.mnt[i] |= sup[1];
-		sup[0] = num.mnt[i];
-		sup[1] = sup[0] << (8 - bits);
+		sup[i + 63] = num.mnt[i] << (64 - bits);
 		num.mnt[i] >>= bits;
+		i++;
 	}
+	sup[127] = 0;
+	while (--i)
+		num.mnt[i] |= sup[i + 64];
+	return (num);
+}
+
+t_lnum			ln_highshift_mnt(t_lnum num, t_4b shift)
+{
+	t_8b		sup[128];
+	t_4b		bytes;
+	t_4b		bits;
+	int			i;
+
+	shift %= 4096;
+	ft_bzero(sup, sizeof(sup));
+	bytes = shift / 64;
+	bits = shift % 64;
+	ft_memcpy(&(sup[bytes]), num.mnt, 512);
+	ft_memcpy(num.mnt, &(sup[0]), 512);
+	i = 0;
+	while (i < 64)
+	{
+		sup[i + 65] = num.mnt[i] >> (64 - bits);
+		num.mnt[i] <<= bits;
+		i++;
+	}
+	sup[64] = 0;
+	while (--i)
+		num.mnt[i] |= sup[i + 64];
 	return (num);
 }
 
@@ -46,6 +73,13 @@ t_lnum			ln_lowshift(t_lnum num, t_4b shift)
 {
 	num.exponent += shift;
 	num = ln_lowshift_mnt(num, shift);
+	return (num);
+}
+
+t_lnum			ln_highshift(t_lnum num, t_4b shift)
+{
+	num.exponent -= shift;
+	num = ln_highshift_mnt(num, shift);
 	return (num);
 }
 
@@ -168,13 +202,13 @@ long double		ln_to_ldouble(t_lnum lnum)
 	return (ldob);
 }
 
-// int		main(void)
-// {
-// 	t_lnum		ln1 = ln_from_ldouble(0.33333333333333);
-// 	ln1 = ln_multen_mnt(ln1);
-// 	ln1 = ln_multen_mnt(ln1);
-// 	ln1 = ln_multen_mnt(ln1);
-// 	ln1 = ln_multen_mnt(ln1);
-// 	long double	ld1 = ln_to_ldouble(ln1);
-// 	return (0);
-// }
+int		main(void)
+{
+	long double	ld1 = 0.33333333333333;
+	t_lnum		ln1 = ln_from_ldouble(0.33333333333333);
+	ln1 = ln_lowshift(ln1, 89);
+	ld1 = ln_to_ldouble(ln1);
+	ln1 = ln_highshift(ln1, 89);
+	ld1 = ln_to_ldouble(ln1);
+	return (0);
+}

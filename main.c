@@ -13,59 +13,59 @@ t_lnum			ln_from_ldouble(long double ldob)
 	ft_bzero(&lnm, sizeof(lnm));
 	lnm.sign = (bytedouble8[1] & 0x8000) >> 15;
 	lnm.exponent = ((bytedouble8[1] & LDOUBLE_EXP_MASK) - LDOUBLE_EXP_SHIFT) + LNUM_EXP_4SHIFT;
-	lnm.mnt[63] = bytedouble8[0];
+	lnm.mnt[LNUM_BYTES8 - 1] = bytedouble8[0];
 	return (lnm);
 }
 
 t_lnum			ln_lowshift_mnt(t_lnum num, t_4b shift)
 {
-	t_8b		sup[128];
+	t_8b		sup[LNUM_BYTES8 * 2];
 	t_4b		bytes;
 	t_4b		bits;
 	int			i;
 
-	shift %= 4096;
+	shift %= LNUM_BYTES8 * 8 * 8;
 	ft_bzero(sup, sizeof(sup));
 	bytes = shift / 64;
 	bits = shift % 64;
-	ft_memcpy(&(sup[64 - bytes]), num.mnt, 512);
-	ft_memcpy(num.mnt, &(sup[64]), 512);
+	ft_memcpy(&(sup[LNUM_BYTES8 - bytes]), num.mnt, LNUM_BYTES8 * 8);
+	ft_memcpy(num.mnt, &(sup[LNUM_BYTES8]), LNUM_BYTES8 * 8);
 	i = 0;
-	while (i < 64)
+	while (i < LNUM_BYTES8)
 	{
-		sup[i + 63] = num.mnt[i] << (64 - bits);
+		sup[i + LNUM_BYTES8 - 1] = num.mnt[i] << (LNUM_BYTES8 - bits);
 		num.mnt[i] >>= bits;
 		i++;
 	}
-	sup[127] = 0;
+	sup[LNUM_BYTES8 * 2 - 1] = 0;
 	while (--i)
-		num.mnt[i] |= sup[i + 64];
+		num.mnt[i] |= sup[i + LNUM_BYTES8];
 	return (num);
 }
 
 t_lnum			ln_highshift_mnt(t_lnum num, t_4b shift)
 {
-	t_8b		sup[128];
+	t_8b		sup[LNUM_BYTES8 * 2];
 	t_4b		bytes;
 	t_4b		bits;
 	int			i;
 
-	shift %= 4096;
+	shift %= LNUM_BYTES8 * 8 * 8;
 	ft_bzero(sup, sizeof(sup));
 	bytes = shift / 64;
 	bits = shift % 64;
-	ft_memcpy(&(sup[bytes]), num.mnt, 512);
-	ft_memcpy(num.mnt, &(sup[0]), 512);
+	ft_memcpy(&(sup[bytes]), num.mnt, LNUM_BYTES8 * 8);
+	ft_memcpy(num.mnt, &(sup[0]), LNUM_BYTES8 * 8);
 	i = 0;
-	while (i < 64)
+	while (i < LNUM_BYTES8)
 	{
-		sup[i + 65] = num.mnt[i] >> (64 - bits);
+		sup[i + LNUM_BYTES8 + 1] = num.mnt[i] >> (LNUM_BYTES8 - bits);
 		num.mnt[i] <<= bits;
 		i++;
 	}
-	sup[64] = 0;
+	sup[LNUM_BYTES8] = 0;
 	while (--i)
-		num.mnt[i] |= sup[i + 64];
+		num.mnt[i] |= sup[i + LNUM_BYTES8];
 	return (num);
 }
 
@@ -91,7 +91,7 @@ int				ln_abscmp(t_lnum n1, t_lnum n2)
 		n2 = ln_lowshift(n2, n1.exponent - n2.exponent);
 	else if (n2.exponent > n1.exponent)
 		n1 = ln_lowshift(n1, n2.exponent - n1.exponent);
-	i = 64;
+	i = LNUM_BYTES8;
 	while (i--)
 	{
 		if (n1.mnt[i] > n2.mnt[i])
@@ -132,7 +132,7 @@ t_lnum			ln_summ_mnt(t_lnum n1, t_lnum n2)
 		n1 = ln_lowshift(n1, n2.exponent - n1.exponent);
 	i = -1;
 	sum.exponent = n1.exponent;
-	while (++i < 63)
+	while (++i < LNUM_BYTES8 - 1)
 	{
 		sum.mnt[i] += n1.mnt[i] + n2.mnt[i];
 		if ((sum.mnt[i] < n1.mnt[i]) || (sum.mnt[i] < n2.mnt[i]))
@@ -165,7 +165,7 @@ t_lnum			ln_sub_mnt(t_lnum n1, t_lnum n2)
 	ft_bzero(&sub, sizeof(sub));
 	sub.exponent = n1.exponent;
 	i = 0;
-	while (++i < 63)
+	while (++i < LNUM_BYTES8)
 	{
 		sub.mnt[i] += n1.mnt[i] - n2.mnt[i];
 		if (sub.mnt[i] > n1.mnt[i])
@@ -190,6 +190,21 @@ t_lnum			ln_multen_mnt(t_lnum n1)
 	return (sum);
 }
 
+t_8b			ln_to_ulong(t_lnum n)
+{
+	t_8b			ulint;
+	t_4b			bin_ds;
+
+	bin_ds = 64 - (n.exponent - LNUM_EXP_4SHIFT + 1);
+	ulint = n.mnt[LNUM_BYTES8 - 1];
+	if (n.exponent > 63 + LNUM_EXP_4SHIFT)
+		return ((t_8b)-1);
+	if (n.exponent < LNUM_EXP_4SHIFT)
+		return ((t_8b)0);
+	ulint >>= bin_ds;
+	return (ulint);
+}
+
 long double		ln_to_ldouble(t_lnum lnum)
 {
 	long double		ldob;
@@ -198,17 +213,11 @@ long double		ln_to_ldouble(t_lnum lnum)
 	bytedouble8 = (t_8b *)&ldob;
 	bytedouble8[1] = 0x8000 & (lnum.sign << 15);
 	bytedouble8[1] |= ((lnum.exponent - LNUM_EXP_4SHIFT + LDOUBLE_EXP_SHIFT) & LDOUBLE_EXP_MASK);
-	bytedouble8[0] = lnum.mnt[63];
+	bytedouble8[0] = lnum.mnt[LNUM_BYTES8 - 1];
 	return (ldob);
 }
 
 int		main(void)
 {
-	long double	ld1 = 0.33333333333333;
-	t_lnum		ln1 = ln_from_ldouble(0.33333333333333);
-	ln1 = ln_lowshift(ln1, 89);
-	ld1 = ln_to_ldouble(ln1);
-	ln1 = ln_highshift(ln1, 89);
-	ld1 = ln_to_ldouble(ln1);
 	return (0);
 }

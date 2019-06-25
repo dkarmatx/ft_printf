@@ -33,7 +33,7 @@ t_lnum			ln_lowshift_mnt(t_lnum num, t_4b shift)
 	i = 0;
 	while (i < LNUM_BYTES8)
 	{
-		sup[i + LNUM_BYTES8 - 1] = num.mnt[i] << (LNUM_BYTES8 - bits);
+		sup[i + LNUM_BYTES8 - 1] = num.mnt[i] << (64 - bits);
 		num.mnt[i] >>= bits;
 		i++;
 	}
@@ -59,7 +59,7 @@ t_lnum			ln_highshift_mnt(t_lnum num, t_4b shift)
 	i = 0;
 	while (i < LNUM_BYTES8)
 	{
-		sup[i + LNUM_BYTES8 + 1] = num.mnt[i] >> (LNUM_BYTES8 - bits);
+		sup[i + LNUM_BYTES8 + 1] = num.mnt[i] >> (64 - bits);
 		num.mnt[i] <<= bits;
 		i++;
 	}
@@ -104,6 +104,10 @@ int				ln_abscmp(t_lnum n1, t_lnum n2)
 
 int				ln_cmp(t_lnum n1, t_lnum n2)
 {
+	(!n1.exponent ? n1.exponent = LNUM_EXP_4SHIFT : 0);
+	(!n2.exponent ? n2.exponent = LNUM_EXP_4SHIFT : 0);
+	if (!n1.exponent && !n2.exponent)
+		return (0);
 	if (n1.sign == n2.sign)
 	{
 		if (!n1.sign)
@@ -154,39 +158,59 @@ t_lnum			ln_sub_mnt(t_lnum n1, t_lnum n2)
 	char		sign;
 
 	sign = 0;
-	if (ln_cmp(n1, n2) < 0)
-	{
-		sub = n1;
-		n1 = n2;
-		n2 = sub;
-		sign = !sign;
-	}
-	n2 = ln_lowshift(n2, n1.exponent - n2.exponent);
+	if (((i = ln_cmp(n1, n2)) < 0))
+		n1 = ln_lowshift(n1, n2.exponent - n1.exponent);
+	else if (i > 0)
+		n2 = ln_lowshift(n2, n1.exponent - n2.exponent);
+	else
+		return (ln_from_ldouble(0.0));
 	ft_bzero(&sub, sizeof(sub));
 	sub.exponent = n1.exponent;
+	if (i < 0)
+		sub.exponent = n2.exponent;
 	i = 0;
-	while (i < LNUM_BYTES8)
+	while (i < (LNUM_BYTES8 - 1))
 	{
 		sub.mnt[i] += n1.mnt[i] - n2.mnt[i];
 		if (sub.mnt[i] > n1.mnt[i])
-			--sub.mnt[i + 1];
-		i++;
+			--sub.mnt[i + i];
+		++i;
 	}
 	sub.mnt[i] += n1.mnt[i] - n2.mnt[i];
-	if (sub.mnt[i] > n1.mnt[i])
-		sub = ln_lowshift(sub, 1);
-	sub.sign = sign;
+	while (!(sub.mnt[LNUM_BYTES8 - 1] & 0x8000000000000000))
+		sub = ln_highshift(sub, 1);
 	return (sub);
 }
 
-t_lnum			ln_multen_mnt(t_lnum n1)
+t_lnum			ln_sub(t_lnum n1, t_lnum n2)
 {
-	int		i;
+	t_lnum		sub;
+	int			cp;
+
+	ft_bzero(&sub, sizeof(sub));
+	if (!n1.exponent && n2.exponent)
+	{
+		n2.sign = !n2.sign;
+		return (n2);
+	}
+	else if (!n2.exponent)
+		return (n1);
+	if (((cp = ln_cmp(n1, n2)) > 0))
+		sub = ln_sub_mnt(n1, n2);
+	else if (cp < 0)
+	{
+		sub = ln_sub_mnt(n2, n1);
+		sub.sign = !sub.sign;
+	}
+	return sub;
+}
+
+t_lnum			ln_multint_mnt(t_lnum n1, t_8b ni)
+{
 	t_lnum	sum;
 
-	i = 10;
 	ft_bzero(&sum, sizeof(sum));
-	while (i--)
+	while (ni--)
 		sum = ln_summ_mnt(sum, n1);
 	return (sum);
 }
@@ -206,6 +230,22 @@ t_8b			ln_to_ulong(t_lnum n)
 	return (ulint);
 }
 
+t_8b			ln_div(t_lnum n, t_lnum d)
+{
+	t_8b	div;
+	t_lnum	lzero;
+	long double		deb;
+
+	div = 0;
+	ft_bzero(&lzero, sizeof(lzero));
+	while (ln_cmp(n, d) >= 0)
+	{
+		++div;
+		n = ln_sub(n, d);
+	}
+	return (div);
+}
+
 long double		ln_to_ldouble(t_lnum lnum)
 {
 	long double		ldob;
@@ -218,45 +258,49 @@ long double		ln_to_ldouble(t_lnum lnum)
 	return (ldob);
 }
 
-/**/
-int		main(void)
+char			*ln_print_fl_part(int prec, t_lnum lnum, char *over)
 {
-	// double		d1 = 42.21;
-	long double	ld1 = (long double)-1.0 / (long double)33.0;
-	t_8b		byt8;
-	t_lnum		ln1;
+	t_8b		i;
+	t_8b		j;
+	char		*str;
 
-	// byt8 = 0x0000000000000001;
-	// ft_memcpy(&d1, &byt8, 8);
-	// ld1 = (long double)d1;
-
-	ln1 = ln_from_ldouble(ld1);
-
-	printf("%.1000Lf\n", ld1);
-	ft_putll_base_fd(ln_to_ulong(ln1), 1, 10);
-	ft_putchar('.');
-	for (int i = 0; i < 1000; ++i)
+	i = 0;
+	str = ft_strnew(prec + 2);
+	str[i++] = '.';
+	*over = 0;
+	while (prec-- > -1)
 	{
-		ln1 = ln_sub_mnt(ln1, ln_from_ldouble((long double)ln_to_ulong(ln1)));
-		ln1 = ln_multen_mnt(ln1);
-		ft_putll_base_fd(ln_to_ulong(ln1), 1, 10);
+		lnum = ln_multint_mnt(ln_sub_mnt(lnum, \
+		ln_from_ldouble((long double)ln_to_ulong(lnum))), 10);
+		str[i++] = ln_to_ulong(lnum) + '0';
 	}
-	return (0);
+	if (str[(j = --i)] >= '5')
+	{
+		while (str[--i] == '9')
+			str[i] = '0';
+		if (i > 1)
+			++str[i];
+		else
+			*over = 1;
+	}
+	str[j] = 0;
+	return (str);
 }
-/**/
 
-/*
 int		main(void)
 {
-	long double		a = 3.5;
-	long double		b = 2.5;
-	long double		c = a - b;
+	long double		a = 0.11112312311;
+	long double		b = 6.999999;
+	char			ov;
+	char			*str;
 
-	t_lnum			lna = ln_from_ldouble(a);
-	t_lnum			lnb = ln_from_ldouble(b);
+	t_lnum		la = ln_from_ldouble(a);
+	t_lnum		lb = ln_from_ldouble(b);
 
-	c = ln_to_ldouble(ln_sub_mnt(lna, lnb));
+	str = ln_print_fl_part(30, lb, &ov);
+	ft_putstr(str);
+	printf("\n%.30LF", b);
 
+	b = ln_to_ldouble(lb);
 	return (0);
 }
-*/

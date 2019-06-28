@@ -11,4 +11,4 @@
 # **************************************************************************** #
 
 all:
-	gcc -I libs/*/includes -I includes libs/*/srcs/*.c srcs/*.c main.c -g -lm
+	gcc -I libs/*/includes -I includes libs/*/srcs/*.c srcs/*.c main.c -g

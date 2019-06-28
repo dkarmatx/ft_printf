@@ -259,7 +259,7 @@ long double		ln_to_ldouble(t_lnum lnum)
 	return (ldob);
 }
 
-char			*ln_print_fl_part(int prec, t_lnum lnum, char *over)
+char			*ln_string_fl_part(int prec, t_lnum lnum, char *over)
 {
 	t_8b		i;
 	t_8b		j;
@@ -268,7 +268,6 @@ char			*ln_print_fl_part(int prec, t_lnum lnum, char *over)
 	i = 0;
 	str = ft_strnew(prec + 2);
 	str[i++] = '.';
-	*over = 0;
 	while (prec-- > -1)
 	{
 		lnum = ln_multint_mnt(ln_sub_mnt(lnum, \
@@ -322,12 +321,12 @@ t_bi			ln_bint_add(t_bi a, t_bi b)
 	i = -1;
 	while (++i < LINT_SIZE)
 	{
-		res.num[i] = a.num[i] + b.num[i];
+		res.num[i] += a.num[i] + b.num[i];
 		if (res.num[i] >= LINT_OVER)
 		{
-			while (res.num[i] >= LINT_OVER)
+			if (res.num[i] >= LINT_OVER)
 				res.num[i] -= LINT_OVER;
-			res.num[i + 1] += 1; // 
+			res.num[i + 1] = 1;
 		}
 	}
 	res.num[LINT_SIZE] = 0;
@@ -366,17 +365,67 @@ t_bi			ln_get_t8byte(long double ld)
 	return (bint);
 }
 
-int		main(void)
+char			*ln_n2s_rformat(size_t a, int len, char filler, char *st)
 {
-	long double a = 10003330001231230000000000000.04L;
-	t_bi		ba = ln_get_t8byte(a);
-	int			i;
+	int		ind;
+
+	if (st)
+	{
+		ind = len;
+		ft_memset(st, filler, len);
+		st[ind] = 0;
+		if (!a)
+			st[ind - 1] = '0';
+		while (a && --ind > -1)
+		{
+			st[ind] = (a % 10) + 48;
+			a /= 10;
+		}
+		st[len] = 0;
+	}
+	return (st + len);
+}
+
+char			*ln_string_int_part(long double ld, char over)
+{
+	t_bi			bint;
+	const t_bi		bi1 = ln_get_bint(0x8000000000000000, 0);
+	int				i;
+	char			*str[2];
+	size_t			len;
 
 	i = LINT_SIZE;
-	while (ba.num[i] == 0 && i > 0)
+	str[0] = ft_strnew(5000);
+	bint = ln_get_t8byte(ld);
+	if (over)
+		bint = ln_bint_add(bint, bi1);
+	while (bint.num[i] == 0 && i > 0)
 		--i;
+	str[1] = ft_lltoa_base(bint.num[i--], 10);
+	len = ft_strlen(str[1]);
+	ft_memcpy(str[0], str[1], len);
+	free(str[1]);
+	str[1] = str[0] + len;
 	while (i > -1)
-		ft_putll_base_fd(ba.num[i--], 1, 10);
-	printf("\n%.0Lf\n", a);
+		str[1] = ln_n2s_rformat(bint.num[i--], 18, '0', str[1]);
+	return (str[0]);
+}
+
+int		main(void)
+{
+	long double a = 0.99999999999999L;
+	char		*str[2];
+	char		over;
+	size_t		i;
+	t_lnum		la;
+
+	la = ln_from_ldouble(a);
+	over = 0;
+	str[1] = ln_string_fl_part(6, la, &over);
+	str[0] = ln_string_int_part(a, over);
+	i = ft_strlen(str[0]);
+	ft_putstr(str[0]);
+	ft_putstr(str[1]);
+	printf("\n%2Lf\n", a);
 	return (0);
 }

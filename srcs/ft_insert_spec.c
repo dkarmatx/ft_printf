@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:53:55 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/23 13:40:37 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/27 17:32:45 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ size_t		insert_spec(t_frmt_fs *frmt, va_list arg)
 	else if (frmt->type == 4)
 		return (ft_insert_c(frmt, arg));
 	else if (frmt->type == 5)
-		return (0);
+		return (ft_insert_p(frmt, arg));
 	else
 		return (0);
 }

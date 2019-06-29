@@ -5,19 +5,11 @@
 
 int		main(void)
 {
- printf(" <- %d\n", ft_printf("%08i", -71));
-	printf(" <- %d\n", printf("%08i", -71));
- printf(" <- %d\n", ft_printf("%.0i", 0));
-	printf(" <- %d\n", printf("%.0i", 0));
- printf(" <- %d\n", ft_printf("%-.12d", -1144));
-	printf(" <- %d\n", printf("%-.12d", -1144));
- printf(" <- %d\n", ft_printf("%.5d", -421));
-	printf(" <- %d\n", printf("%.5d", -421));
- printf(" <- %d\n", ft_printf("%d", -42));
-	printf(" <- %d\n", printf("%d", -42));
- printf(" <- %d\n", ft_printf("%5d", -741));
-	printf(" <- %d\n", printf("%5d", -741));
-
-
+	printf(" <-- %d\n", ft_printf("coco et %-#-#--24O titi%#012o", 12, -874));
+	printf(" <-- %d\n", printf("coco et %-#-#--24O titi%#012o", 12, -874));
+	// printf(" <-- %d\n", ft_printf("%hho", (unsigned char)-12));
+	// printf(" <-- %d\n", printf("%hho", (unsigned char)-12));
+	// printf(" <-- %d\n", ft_printf("%-12o", 01423));
+	// printf(" <-- %d\n", printf("%-12o", 01423));
 return (0);
 }

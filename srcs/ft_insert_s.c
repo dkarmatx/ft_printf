@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 21:22:03 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/23 13:24:35 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/29 17:00:21 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void			ft_putchar_n(char c, int n)
 	}
 }
 
-static size_t	ft_print_str(t_frmt_fs *f, size_t len, size_t size, char *str)
+size_t	ft_print_str(t_frmt_fs *f, size_t len, size_t size, char *str)
 {
 	if (!f->orient)
 	{

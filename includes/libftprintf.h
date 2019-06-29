@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/23 13:38:04 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/29 17:21:49 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,43 +42,60 @@ typedef struct		s_flags_specifier
 	char			spec;
 }					t_frmt_fs;
 
-int			ft_printf(const char *format, ...);
+int					ft_printf(const char *format, ...);
 
 /*
 ** FORMAT PARSER FUCNTIONS
 */
 
-char		*format_parser(char *spec, t_frmt_fs *frmt, va_list arg);
+char				*format_parser(char *spec, t_frmt_fs *frmt, va_list arg);
 
 /*
 ** INSERTING FUNCTIONS
 */
 
-size_t		insert_spec(t_frmt_fs *frmt, va_list arg);
+size_t				insert_spec(t_frmt_fs *frmt, va_list arg);
 
 /*
 ** INSERT STRING
 */
 
-size_t		ft_insert_s(t_frmt_fs *frmt, va_list arg);
+size_t				ft_insert_s(t_frmt_fs *frmt, va_list arg);
 
 /*
 ** INSERT CHAR
 */
 
-int			ft_insert_c(t_frmt_fs *frmt, va_list arg);
+int					ft_insert_c(t_frmt_fs *frmt, va_list arg);
 
 /*
 ** втсавляем чар н раз
 */
 
-void		ft_putchar_n(char c, int n);
+void				ft_putchar_n(char c, int n);
 
 /*
 ** INSERT B
 */
 
-int			ft_insert_b(t_frmt_fs *frmt, va_list arg);
+int					ft_insert_b(t_frmt_fs *frmt, va_list arg);
 
+
+/*
+** HELP
+*/
+
+void				ft_putll_base_spec(long long nb, char spec);
+int					ft_return_insert_b(t_frmt_fs *f, int len);
+int					ft_get_len(long long *n, int base, t_frmt_fs *f);
+int					ft_parse_spec(t_frmt_fs *f, int fl, long long n);
+int					ft_get_base(char c);
+
+/*
+** INSERT P
+*/
+
+int					ft_insert_p(t_frmt_fs *f, va_list arg);
+char				*ft_lltoa_base(long long nb, int base);
 
 #endif

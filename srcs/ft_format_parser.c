@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:11:47 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/22 02:55:13 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/27 15:30:50 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char	*wp_parser(char *spec, t_frmt_fs *frmt, va_list arg)
 
 static int	type_mode(char *spec)
 {
-	if (ft_memchr("dioxXu", (int)(*spec), 6))
+	if (ft_memchr("dDioOxXuU", (int)(*spec), 10))
 		return (1);
 	else if (ft_memchr("aAeEfFgG", (int)(*spec), 8))
 		return (2);

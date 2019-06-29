@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/21 20:59:56 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/06/29 20:39:12 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,17 @@
 # include "libft.h"
 
 /*
-** bufflen - Размер буфера вывода для int. для float количество символов слева
-** prelen - точность
-** base - система счисления
-** orient - если 0 то выравнивание по правому краю иначе по левому
-** zerofill - заполнение 0 или нет
-** asteriks - если 0b00 x.x, если 0b10 *.x, если 0b01 x.*, 0b11 *.*
-** sharp - # ? 1 : 0
-** sign - требуется вывод знака или нет
+** error - зарезервиравано под ошибки
+** type - типы спецификаторов от 1 до 5
+** size - размер в байтах
+** field_len - длина поля (числа по пизде)
+** precision - точность
+** orient - если 0 то правое, если 1 то левое выравнивания
+** zerofill - заполнение нулями
+** sharp - ШАРП
+** sign - знак
+** ispre - есть ли пресижн
+** spec - спецификатор
 */
 typedef struct		s_flags_specifier
 {
@@ -35,7 +38,6 @@ typedef struct		s_flags_specifier
 	int				precision;
 	char			orient;
 	char			zerofill;
-	char			asteriks;
 	char			sharp;
 	char			sign;
 	char			ispre;
@@ -55,5 +57,7 @@ char		*format_parser(char *spec, t_frmt_fs *frmt, va_list arg);
 */
 
 size_t		insert_spec(t_frmt_fs *frmt, va_list arg);
+int			put_float(t_frmt_fs *f, const char *fl, const char *fint, size_t len);
+int			put_n_char(char c, ssize_t n);
 
 #endif

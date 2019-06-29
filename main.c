@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <unistd.h>
 #include "libftprintf.h"
 #include "longnumber.h"
 
@@ -13,7 +14,8 @@ t_lnum			ln_from_ldouble(long double ldob)
 	bytedouble8 = (t_8b *)&ldob;
 	ft_bzero(&lnm, sizeof(lnm));
 	lnm.sign = (bytedouble8[1] & 0x8000) >> 15;
-	lnm.exponent = ((bytedouble8[1] & LDOUBLE_EXP_MASK) - LDOUBLE_EXP_SHIFT) + LNUM_EXP_4SHIFT;
+	lnm.exponent = ((bytedouble8[1] & LDOUBLE_EXP_MASK)\
+	- LDOUBLE_EXP_SHIFT) + LNUM_EXP_4SHIFT;
 	lnm.mnt[LNUM_BYTES8 - 1] = bytedouble8[0];
 	return (lnm);
 }
@@ -156,9 +158,7 @@ t_lnum			ln_sub_mnt(t_lnum n1, t_lnum n2)
 {
 	int			i;
 	t_lnum		sub;
-	char		sign;
 
-	sign = 0;
 	if (((i = ln_cmp(n1, n2)) < 0))
 		n1 = ln_lowshift(n1, n2.exponent - n1.exponent);
 	else if (i > 0)
@@ -203,7 +203,7 @@ t_lnum			ln_sub(t_lnum n1, t_lnum n2)
 		sub = ln_sub_mnt(n2, n1);
 		sub.sign = !sub.sign;
 	}
-	return sub;
+	return (sub);
 }
 
 t_lnum			ln_multint_mnt(t_lnum n1, t_8b ni)
@@ -216,7 +216,7 @@ t_lnum			ln_multint_mnt(t_lnum n1, t_8b ni)
 	return (sum);
 }
 
-t_8b			ln_to_ulong(t_lnum n)
+t_8b			ln_to_ulong(const t_lnum n)
 {
 	t_8b			ulint;
 	t_4b			bin_ds;
@@ -231,11 +231,10 @@ t_8b			ln_to_ulong(t_lnum n)
 	return (ulint);
 }
 
-t_8b			ln_div(t_lnum n, t_lnum d)
+t_8b			ln_div(t_lnum n, t_lnum const d)
 {
 	t_8b	div;
 	t_lnum	lzero;
-	long double		deb;
 
 	div = 0;
 	ft_bzero(&lzero, sizeof(lzero));
@@ -247,14 +246,15 @@ t_8b			ln_div(t_lnum n, t_lnum d)
 	return (div);
 }
 
-long double		ln_to_ldouble(t_lnum lnum)
+long double		ln_to_ldouble(const t_lnum lnum)
 {
 	long double		ldob;
 	t_8b			*bytedouble8;
 
 	bytedouble8 = (t_8b *)&ldob;
 	bytedouble8[1] = 0x8000 & (lnum.sign << 15);
-	bytedouble8[1] |= ((lnum.exponent - LNUM_EXP_4SHIFT + LDOUBLE_EXP_SHIFT) & LDOUBLE_EXP_MASK);
+	bytedouble8[1] |= \
+	((lnum.exponent - LNUM_EXP_4SHIFT + LDOUBLE_EXP_SHIFT) & LDOUBLE_EXP_MASK);
 	bytedouble8[0] = lnum.mnt[LNUM_BYTES8 - 1];
 	return (ldob);
 }
@@ -267,18 +267,18 @@ char			*ln_string_fl_part(int prec, t_lnum lnum, char *over)
 
 	i = 0;
 	str = ft_strnew(prec + 2);
-	str[i++] = '.';
 	while (prec-- > -1)
 	{
 		lnum = ln_multint_mnt(ln_sub_mnt(lnum, \
 		ln_from_ldouble((long double)ln_to_ulong(lnum))), 10);
 		str[i++] = ln_to_ulong(lnum) + '0';
+		str[i - 1] = str[i - 1] == '/' ? '0' : str[i - 1];
 	}
 	if (str[(j = --i)] >= '5')
 	{
-		while (str[--i] == '9')
+		while (i > 0 && str[--i] == '9')
 			str[i] = '0';
-		if (i > 1)
+		if (i > 0)
 			++str[i];
 		else
 			*over = 1;
@@ -290,7 +290,6 @@ char			*ln_string_fl_part(int prec, t_lnum lnum, char *over)
 t_bi			ln_pow_two(t_8b pow)
 {
 	t_bi		bi;
-	t_8b		t;
 	int			i;
 
 	ft_bzero(&bi, sizeof(bi));
@@ -304,7 +303,7 @@ t_bi			ln_pow_two(t_8b pow)
 			if (bi.num[i] >= LINT_OVER)
 			{
 				bi.num[i] -= LINT_OVER;
-				bi.num[i + 1] += 1;
+				++bi.num[i + 1];
 			}
 		}
 	}
@@ -333,7 +332,7 @@ t_bi			ln_bint_add(t_bi a, t_bi b)
 	return (res);
 }
 
-t_bi			ln_get_bint(t_8b mnt, int exp) // ЗДЕСЬ ВСЕ ОК
+t_bi			ln_get_bint(t_8b mnt, int exp)
 {
 	t_bi		bint;
 
@@ -348,24 +347,24 @@ t_bi			ln_get_bint(t_8b mnt, int exp) // ЗДЕСЬ ВСЕ ОК
 	return (bint);
 }
 
-t_bi			ln_get_t8byte(long double ld)
+t_bi			ln_get_t8byte(const long double ld)
 {
 	t_bi		bint;
 	int			exp;
-	t_8b		mnt;
-	t_8b		*lp;
+	t_8b const	*lp = (t_8b *)&ld;
 
-	lp = (t_8b *)&ld;
-	mnt = lp[0];
 	if ((LDOUBLE_EXP_MASK & lp[1]) >= LDOUBLE_EXP_SHIFT)
+	{
 		exp = (LDOUBLE_EXP_MASK & lp[1]) - LDOUBLE_EXP_SHIFT;
+		bint = ln_get_bint(lp[0], exp);
+	}
 	else
-		bint.err = 1;
-	bint = ln_get_bint(mnt, exp);
+		ft_bzero(&bint, sizeof(bint));
 	return (bint);
 }
 
-char			*ln_n2s_rformat(size_t a, int len, char filler, char *st)
+char			*ln_n2s_rformat(size_t a, const int len,\
+const char filler, char *st)
 {
 	int		ind;
 
@@ -384,6 +383,18 @@ char			*ln_n2s_rformat(size_t a, int len, char filler, char *st)
 		st[len] = 0;
 	}
 	return (st + len);
+}
+
+int inline		put_n_char(char c, ssize_t n)
+{
+	int		len;
+
+	len = -1;
+	while (++len < n)
+	{
+		write(1, &c, 1);
+	}
+	return (len);
 }
 
 char			*ln_string_int_part(long double ld, char over)
@@ -411,21 +422,65 @@ char			*ln_string_int_part(long double ld, char over)
 	return (str[0]);
 }
 
-int		main(void)
+int	inline		put_float(t_frmt_fs *f, const char *fl, const char *fint, size_t len)
 {
-	long double a = 0.99999999999999L;
+	if (!f->orient && !f->zerofill)
+		len += put_n_char((f->zerofill ? '0' : ' '), f->field_len - len);
+	if (f->error)
+		write(1, "-", 1);
+	else if (f->sign == 1)
+		write(1, "+", 1);
+	else if (f->sign == 2)
+		write(1, " ", 1);
+	if (!f->orient && f->zerofill)
+		len += put_n_char((f->zerofill ? '0' : ' '), f->field_len - len);
+	write(1, fint, ft_strlen(fint));
+	if (f->ispre)
+	{
+		write(1, ".", 1);
+		write(1, fl, ft_strlen(fl));
+	}
+	if (f->orient)
+		len += put_n_char(' ', f->field_len - len);
+	return (len);
+}
+
+size_t			print_spc_f(t_frmt_fs *f, const long double a)
+{
 	char		*str[2];
 	char		over;
-	size_t		i;
-	t_lnum		la;
+	size_t		len;
 
-	la = ln_from_ldouble(a);
 	over = 0;
-	str[1] = ln_string_fl_part(6, la, &over);
+	if (f->ispre)
+		str[1] = ln_string_fl_part(f->precision, ln_from_ldouble(a), &over);
+	else if (((long double)(a - (size_t)a) >= 0.5L && (size_t)a % 2) ||\
+	((!(size_t)a % 2) && (long double)(a - (size_t)a) > 0.5L))
+		over = 1;
 	str[0] = ln_string_int_part(a, over);
-	i = ft_strlen(str[0]);
-	ft_putstr(str[0]);
-	ft_putstr(str[1]);
-	printf("\n%2Lf\n", a);
+	len = f->ispre ? f->precision + 1 : 0;
+	len += ft_strlen(str[0]) + (a < 0 || f->sign > 0 ? 1 : 0);
+	f->error = (a < 0);
+	len = put_float(f, str[1], str[0], len);
+	free(str[0]);
+	free(str[1]);
+	return (len);
+}
+
+int		main(void)
+{
+	long double a = 13232325234231231231231231231231232131231231231231233123123123123123123123231231231234234234242423423424234234234.99999L;
+	size_t		b;
+	t_frmt_fs	f;
+
+	ft_bzero(&f, sizeof(f));
+	f.sign = 1;
+	f.ispre = 1;
+	f.precision = 10;
+	f.field_len = 2;
+	f.zerofill = 0;
+	f.orient = 0;
+	b = print_spc_f(&f, a);
+	b = printf("\n%LF\n", a);
 	return (0);
 }

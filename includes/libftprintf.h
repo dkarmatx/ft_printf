@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/29 20:39:12 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/06/30 15:21:43 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdarg.h>
 # include "libft.h"
+# include "longnumber.h"
 
 /*
 ** error - зарезервиравано под ошибки
@@ -29,35 +30,41 @@
 ** ispre - есть ли пресижн
 ** spec - спецификатор
 */
-typedef struct		s_flags_specifier
+typedef struct	s_flags_specifier
 {
-	int				error;
-	int				type;
-	int				size;
-	int				field_len;
-	int				precision;
-	char			orient;
-	char			zerofill;
-	char			sharp;
-	char			sign;
-	char			ispre;
-	char			spec;
-}					t_frmt_fs;
+	int			error;
+	int			type;
+	int			size;
+	int			field_len;
+	int			precision;
+	char		orient;
+	char		zerofill;
+	char		sharp;
+	char		sign;
+	char		ispre;
+	char		spec;
+}				t_frmt_fs;
 
-int			ft_printf(const char *format, ...);
+int				ft_printf(const char *format, ...);
 
 /*
 ** FORMAT PARSER FUCNTIONS
 */
 
-char		*format_parser(char *spec, t_frmt_fs *frmt, va_list arg);
+char			*format_parser(char *spec, t_frmt_fs *frmt, va_list arg);
 
 /*
 ** INSERTING FUNCTIONS
 */
 
-size_t		insert_spec(t_frmt_fs *frmt, va_list arg);
-int			put_float(t_frmt_fs *f, const char *fl, const char *fint, size_t len);
-int			put_n_char(char c, ssize_t n);
+size_t			insert_spec(t_frmt_fs *frmt, va_list arg);
+int				ft_putchar_n(char c, ssize_t n);
+
+/*
+** FLOAT INSERTING
+*/
+
+int				put_fl(t_frmt_fs *f, const char *fl, const char *i, size_t l);
+size_t			insert_doubles(t_frmt_fs *frtmt, va_list arg);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 21:22:03 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/30 20:37:36 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 21:32:46 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ size_t			ft_insert_s(t_frmt_fs *f, va_list arg)
 		return (size);
 	}
 	if (!str)
-		str = ft_strsub("(null)", 0, 6);
+		str = "(null)";
 	len = ft_strlen(str);
 	return (ft_print_str(f, len, size, str));
 }

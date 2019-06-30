@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/28 14:14:44 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/28 15:49:22 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 21:28:17 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,6 @@ int				ft_insert_p(t_frmt_fs *f, va_list arg)
 		ft_putchar_n(' ', f->ispre && f->precision > len ?\
 		f->field_len - f->precision - 2 : f->field_len - 2 - len);
 	}
+	free(str);
 	return (ft_return_insert_p(f, len));
 }

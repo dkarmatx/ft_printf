@@ -6,102 +6,102 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:11:47 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/30 20:15:22 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:31:25 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-static char	*flag_parser(char *spec, t_frmt_fs *frmt)
+static char	*flag_parser(char *sc, t_frmt_fs *frmt)
 {
 	while (1)
 	{
-		if (*spec == '0')
+		if (*sc == '0')
 			!frmt->orient ? frmt->zerofill = 1 : 0;
-		else if (*spec == '+')
+		else if (*sc == '+')
 			frmt->sign = 1;
-		else if (*spec == '-')
+		else if (*sc == '-')
 			frmt->orient = 1;
-		else if (*spec == ' ')
+		else if (*sc == ' ')
 			frmt->sign != 1 ? frmt->sign = 2 : 0;
-		else if (*spec == '#')
+		else if (*sc == '#')
 			frmt->sharp = 1;
 		else
 			break ;
-		++spec;
+		++sc;
 	}
-	return (spec);
+	return (sc);
 }
 
-static char	*wp_parser(char *spec, t_frmt_fs *frmt, va_list arg)
+static char	*wp_parser(char *sc, t_frmt_fs *frmt, va_list arg)
 {
-	if (*spec == '*' && spec++)
+	if (*sc == '*' && sc++)
 		frmt->field_len = ft_abc(va_arg(arg, int));
-	else if ((frmt->field_len = ft_abc(ft_atoi(spec))))
-		while (ft_isdigit(*spec))
-			spec++;
-	if (*spec == '.')
+	else if ((frmt->field_len = ft_abc(ft_atoi(sc))))
+		while (ft_isdigit(*sc))
+			sc++;
+	if (*sc == '.')
 	{
 		frmt->ispre = 1;
-		if (*(++spec) == '*' && spec++)
+		if (*(++sc) == '*' && sc++)
 			frmt->precision = ft_abc(va_arg(arg, int));
-		else if ((frmt->precision = ft_abc(ft_atoi(spec))))
-			while (ft_isdigit(*spec))
-				spec++;
+		else if ((frmt->precision = ft_abc(ft_atoi(sc))))
+			while (ft_isdigit(*sc))
+				sc++;
 	}
-	return (spec);
+	return (sc);
 }
 
-static int	type_mode(char *spec)
+static int	type_mode(char *sc)
 {
-	if (ft_memchr("dDioOxXuU", (int)(*spec), 10))
+	if (ft_memchr("dDioOxXuU", (int)(*sc), 10))
 		return (1);
-	else if (ft_memchr("aAeEfFgG", (int)(*spec), 8))
+	else if (ft_memchr("aAeEfFgG", (int)(*sc), 8))
 		return (2);
-	else if (*spec == 's')
+	else if (*sc == 's')
 		return (3);
-	else if (*spec == 'c')
+	else if (*sc == 'c')
 		return (4);
-	else if (*spec == 'p')
+	else if (*sc == 'p')
 		return (5);
 	return (0);
 }
 
-static char	*type_parser(char *spec, t_frmt_fs *f)
+static char	*type_parser(char *sc, t_frmt_fs *f)
 {
 	long double	m;
 
 	f->size = 4;
-	while (!(f->type = type_mode(spec)))
+	while (!(f->type = type_mode(sc)))
 	{
-		!(ft_strncmp("hh", spec, 2)) && f->size < sizeof(long)\
+		!(ft_strncmp("hh", sc, 2)) && f->size < (int)sizeof(long)\
 		? f->size = sizeof(char) : 0;
-		*spec == 'h' && f->size < sizeof(long) && f->size > sizeof(char)\
+		*sc == 'h' && f->size < (int)8 && f->size > (int)sizeof(char)\
 		? f->size = sizeof(short) : 0;
-		*spec == 'l' && f->size < sizeof(m) ? f->size = sizeof(long) : 0;
-		!(ft_strncmp("ll", spec, 2)) && f->size < sizeof(m) \
+		*sc == 'l' && f->size < (int)sizeof(m) ? f->size = sizeof(long) : 0;
+		!(ft_strncmp("ll", sc, 2)) && f->size < (int)sizeof(m) \
 		? f->size = sizeof(long long) : 0;
-		*spec == 'z' && f->size < sizeof(m) ? f->size = sizeof(size_t) : 0;
-		*spec == 't' && f->size < sizeof(m) ? f->size = sizeof(size_t) : 0;
-		*spec == 'j' && f->size < sizeof(m) ? f->size = sizeof(size_t) : 0;
-		*spec == 'L' ? f->size = sizeof(m) : 0;
-		++spec;
+		*sc == 'z' && f->size < (int)sizeof(m) ? f->size = sizeof(size_t) : 0;
+		*sc == 't' && f->size < (int)sizeof(m) ? f->size = sizeof(size_t) : 0;
+		*sc == 'j' && f->size < (int)sizeof(m) ? f->size = sizeof(size_t) : 0;
+		*sc == 'L' ? f->size = sizeof(m) : 0;
+		++sc;
 	}
 	f->type == 1 && f->size > 8 ? f->size = 8 : 0;
 	f->type == 2 && !f->size ? f->size = 8 : 0;
 	f->type == 2 && f->size < 8 ? f->size = 8 : 0;
 	f->type == 3 || f->type == 5 ? f->size = 8 : 0;
 	f->type == 4 ? f->size = 1 : 0;
-	++spec;
-	return (spec);
+	++sc;
+	return (sc);
 }
 
-char		*format_parser(char *spec, t_frmt_fs *frmt, va_list arg)
+char		*format_parser(char *sc, t_frmt_fs *frmt, va_list arg)
 {
 	ft_bzero(frmt, sizeof(t_frmt_fs));
-	spec = flag_parser(spec, frmt);
-	spec = wp_parser(spec, frmt, arg);
-	spec = type_parser(spec, frmt);
-	frmt->spec = *(spec - 1);
-	return (spec);
+	sc = flag_parser(sc, frmt);
+	sc = wp_parser(sc, frmt, arg);
+	sc = type_parser(sc, frmt);
+	frmt->spec = *(sc - 1);
+	return (sc);
 }

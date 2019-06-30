@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 21:22:03 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/30 20:14:51 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:25:29 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,22 @@ size_t			ft_print_str(t_frmt_fs *f, size_t len, size_t size, char *str)
 	if (!f->orient)
 	{
 		ft_putchar_n(f->zerofill ? '0' : ' ',
-		f->precision > len || !f->ispre ? size - len : size - f->precision);
-		write(1, str, f->ispre && f->precision < len ? f->precision : len);
+		(unsigned)f->precision > len || !f->ispre \
+		? size - len : size - f->precision);
+		write(1, str, f->ispre && (unsigned)f->precision \
+		< len ? f->precision : len);
 	}
 	else
 	{
-		write(1, str, f->ispre && f->precision < len ? f->precision : len);
+		write(1, str, f->ispre && (unsigned)f->precision \
+		< len ? f->precision : len);
 		ft_putchar_n(f->zerofill ? '0' : ' ',
-		f->precision > len || !f->ispre ? size - len : size - f->precision);
+		(unsigned)f->precision > len || !f->ispre \
+		? size - len : size - f->precision);
 	}
 	if (size >= len)
 		return (size);
-	else if (!f->ispre || len < f->precision)
+	else if (!f->ispre || len < (unsigned)f->precision)
 		return (len);
 	else
 		return (f->precision);

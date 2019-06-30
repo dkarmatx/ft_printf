@@ -6,11 +6,12 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/28 14:13:37 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/30 20:14:05 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:20:22 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
+#include <unistd.h>
 
 int					ft_return_insert_b(t_frmt_fs *f, int len)
 {

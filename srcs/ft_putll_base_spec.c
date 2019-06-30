@@ -6,14 +6,14 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/25 15:35:23 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/30 20:10:08 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:23:34 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "libftprintf.h"
 
-long long			get_max_dec(long long nb, int base, char spec)
+long long			get_max_dec(long long nb, int base)
 {
 	long long			dec;
 
@@ -24,7 +24,7 @@ long long			get_max_dec(long long nb, int base, char spec)
 	return (dec);
 }
 
-unsigned long long	get_max_dec_u(unsigned long long nb, int base, char spec)
+unsigned long long	get_max_dec_u(unsigned long long nb, int base)
 {
 	size_t			dec;
 
@@ -54,7 +54,7 @@ void				ft_putull_base_spec(unsigned long long nb, char spec)
 	alphu = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
 	alph = "0123456789abcdefghijklmnopqrstuv";
 	base = ft_get_base(spec);
-	dec = get_max_dec_u(nb, base, spec);
+	dec = get_max_dec_u(nb, base);
 	while (dec > 0)
 	{
 		if ((cur = nb / dec) == base)
@@ -77,7 +77,7 @@ void				ft_putll_base_spec(long long nb, char spec)
 	alphu = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
 	alph = "0123456789abcdefghijklmnopqrstuv";
 	base = ft_get_base(spec);
-	dec = get_max_dec(nb, base, spec);
+	dec = get_max_dec(nb, base);
 	if (!ft_memchr("uUoOxX", spec, 6))
 	{
 		while (dec > 0)

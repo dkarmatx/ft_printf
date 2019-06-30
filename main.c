@@ -9,8 +9,6 @@
 
 int		main(void)
 {
-	int ret;
-	int tret;
 
 	test("%------------7i", 0xd777, 1);
 	test("%000000000000007d", 0x45, 2);

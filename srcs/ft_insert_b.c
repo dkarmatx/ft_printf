@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/23 13:10:50 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/30 20:16:31 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:25:42 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ int					ft_insert_b(t_frmt_fs *f, va_list arg)
 	long long	n;
 	char		*sign;
 	int			len;
-	int			fl;
 	int			spec_len;
 
 	n = ft_get_num(f, arg);

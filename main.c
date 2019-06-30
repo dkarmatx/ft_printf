@@ -3,13 +3,16 @@
 #include <unistd.h>
 #include "libftprintf.h"
 
+#define test(str, value, n) printf("\n==================| %d test |==================\n", n); \
+							printf(" <-- %d\n", ft_printf(str, value)); \
+							printf(" <-- %d\n", printf(str, value));
+
 int		main(void)
 {
-	printf(" <-- %d\n", ft_printf("coco et %-#-#--24O titi%#012o", 12, -874));
-	printf(" <-- %d\n", printf("coco et %-#-#--24O titi%#012o", 12, -874));
-	// printf(" <-- %d\n", ft_printf("%hho", (unsigned char)-12));
-	// printf(" <-- %d\n", printf("%hho", (unsigned char)-12));
-	// printf(" <-- %d\n", ft_printf("%-12o", 01423));
-	// printf(" <-- %d\n", printf("%-12o", 01423));
-return (0);
+	int ret;
+	int tret;
+
+	test("%------------7i", 0xd777, 1);
+	test("%000000000000007d", 0x45, 2);
+	test("%ls", L"„Äª", 3);
 }

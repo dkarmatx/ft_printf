@@ -6,16 +6,11 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:11:47 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/27 15:30:50 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:15:22 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
-
-int		ft_abc(int n)
-{
-	return (n < 0 ? n * -1 : n);
-}
 
 static char	*flag_parser(char *spec, t_frmt_fs *frmt)
 {

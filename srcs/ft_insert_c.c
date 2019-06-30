@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 01:30:42 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/23 10:56:45 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:16:13 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int			ft_insert_c(t_frmt_fs *f, va_list arg)
 {
 	char	c;
 	size_t	size;
-	
+
 	size = f->field_len;
 	c = va_arg(arg, int);
 	if (!f->orient)
@@ -31,4 +31,9 @@ int			ft_insert_c(t_frmt_fs *f, va_list arg)
 		ft_putchar_n(f->zerofill ? '0' : ' ', size - 1);
 	}
 	return (size ? size : 1);
+}
+
+int			ft_abc(int n)
+{
+	return (n < 0 ? n * -1 : n);
 }

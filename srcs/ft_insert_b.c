@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/23 13:10:50 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/29 21:29:21 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:16:31 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int					ft_parse_spec(t_frmt_fs *f, int fl, long long n)
 	else if (fl == 1 && f->sharp
 	&& n != 0 && f->spec == 'X')
 		write(1, "0X", 2);
-	else if ((f->spec == 'o' || f->spec == '0') && n != 0)
+	else if ((f->spec == 'o' || f->spec == 'O') && n != 0 && f->sharp)
 		return (1);
-	else if ((f->spec == 'X' || f->spec == 'x') && n != 0)
+	else if ((f->spec == 'X' || f->spec == 'x') && n != 0 && f->sharp)
 		return (2);
 	return (0);
 }
@@ -57,35 +57,35 @@ static void			ft_print_b_else(t_frmt_fs *f, long long n, char *s, int l)
 	|| f->sign == 1)
 		write(1, s, 1);
 	ft_parse_spec(f, 1, n);
-	ft_putchar_n('0', f->precision - l + ft_parse_spec(f, 0, n));
+	ft_putchar_n('0', f->precision - l);
 	ft_putll_base_spec(n, f->spec);
 	ft_putchar_n(' ', f->field_len -\
-	(f->precision > l ? f->precision : l + ft_parse_spec(f, 0, n)));
+	(f->precision > l ? f->precision : l));
 }
 
 static void			ft_print_d(t_frmt_fs *f, long long n, char *sign, int len)
 {
 	int	fl;
+	int	spc;
 
 	if ((fl = 0) == 0 && !f->orient)
 	{
 		if (f->field_len > f->precision && f->field_len > len)
 		{
-			if (((((f->precision > f->field_len || !f->ispre)
-			&& !(f->field_len > len && !f->zerofill)
-			&& (!ft_strcmp(sign, "-") || f->sign == 1) && (fl = 1) == 1)
+			if (((!f->ispre) && f->zerofill
+			&& (*sign == '-' || f->sign == 1) && (fl = 1))
 			&& !ft_memchr("uUoOxX", (int)f->spec, 6))
-			|| (f->precision > f->field_len && f->sign == 1 && (fl = 1) == 1)))
 				write(1, sign, 1);
-			ft_putchar_n(f->zerofill && !f->ispre ? '0' : ' ',
-			f->field_len -\
-			(f->precision > len ? f->precision : len));
+			spc = ft_parse_spec(f, f->zerofill && !f->ispre, n);
+			ft_putchar_n(f->zerofill && !f->ispre ? '0' : ' ', f->field_len -\
+			(f->precision + spc > len ? f->precision + spc : len));
 		}
 		if (fl == 0 && !ft_memchr("uUoOxX", (int)f->spec, 6)
-		&& (!ft_strcmp(sign, "-") || f->sign == 1))
+		&& (*sign == '-' || f->sign == 1))
 			write(1, sign, 1);
-		ft_parse_spec(f, 1, n);
-		ft_putchar_n('0', f->precision - len);
+		ft_parse_spec(f, !f->zerofill || (f->field_len <= len) || f->ispre, n);
+		ft_putchar_n('0', f->sharp && (f->spec == 'X' || f->spec == 'x')
+		&& n != 0 ? f->precision - len + 2 : f->precision - len);
 		ft_putll_base_spec(n, f->spec);
 		return ;
 	}
@@ -98,6 +98,7 @@ int					ft_insert_b(t_frmt_fs *f, va_list arg)
 	char		*sign;
 	int			len;
 	int			fl;
+	int			spec_len;
 
 	n = ft_get_num(f, arg);
 	sign = n >= 0 ? "+" : "-";
@@ -105,14 +106,14 @@ int					ft_insert_b(t_frmt_fs *f, va_list arg)
 	len += (int)(f->sign && !ft_strcmp(sign, "+"));
 	f->precision += f->precision && (f->sign || !ft_strcmp(sign, "-")) ? 1 : 0;
 	if (f->ispre && !f->precision && !n && !f->sign)
-		return (ft_return_insert_b(f, len - 1));
+		return (ft_kostyl_zero(f, len));
 	if (n == 0 && f->ispre && !f->precision && f->sign)
-	{
-		write(1, f->sign == 1 ? "+" : " ", 1);
-		return (1);
-	}
+		return ((int)write(1, f->sign == 1 ? "+" : " ", 1));
 	if (f->sign == 2 && !ft_strcmp(sign, "+"))
 		write(1, f->sign == 1 ? "+" : " ", 1);
 	ft_print_d(f, n, sign, len);
+	spec_len = ft_parse_spec(f, 0, n);
+	(spec_len == 1) ? --f->precision : 0;
+	len - spec_len < f->precision ? len = f->precision + spec_len : 0;
 	return (ft_return_insert_b(f, len));
 }

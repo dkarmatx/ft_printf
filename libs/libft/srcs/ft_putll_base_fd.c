@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/07 21:02:05 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/23 14:23:45 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:17:34 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void				ft_putll_base_fd(long long nb, int fd, int base)
 	long long		dec;
 	int				cur;
 	char			*alph;
-
 
 	alph = "0123456789abcdefghijklmnopqrstuv";
 	dec = get_max_dec(nb, base);

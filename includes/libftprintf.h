@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/29 17:21:49 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:16:57 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void				ft_putchar_n(char c, int n);
 
 int					ft_insert_b(t_frmt_fs *frmt, va_list arg);
 
-
 /*
 ** HELP
 */
@@ -90,6 +89,8 @@ int					ft_return_insert_b(t_frmt_fs *f, int len);
 int					ft_get_len(long long *n, int base, t_frmt_fs *f);
 int					ft_parse_spec(t_frmt_fs *f, int fl, long long n);
 int					ft_get_base(char c);
+int					ft_kostyl_zero(t_frmt_fs *f, int len);
+int					ft_abc(int n);
 
 /*
 ** INSERT P

@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:53:55 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/27 17:32:45 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:13:46 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,3 @@ size_t		insert_spec(t_frmt_fs *frmt, va_list arg)
 	else
 		return (0);
 }
-	

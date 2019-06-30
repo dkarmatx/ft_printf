@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/30 20:16:57 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:39:59 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,20 @@
 
 # include <stdarg.h>
 # include "libft.h"
+# include "longnumber.h"
 
 /*
-** bufflen - Размер буфера вывода для int. для float количество символов слева
-** prelen - точность
-** base - система счисления
-** orient - если 0 то выравнивание по правому краю иначе по левому
-** zerofill - заполнение 0 или нет
-** asteriks - если 0b00 x.x, если 0b10 *.x, если 0b01 x.*, 0b11 *.*
-** sharp - # ? 1 : 0
-** sign - требуется вывод знака или нет
+** error - зарезервиравано под ошибки
+** type - типы спецификаторов от 1 до 5
+** size - размер в байтах
+** field_len - длина поля (числа по пизде)
+** precision - точность
+** orient - если 0 то правое, если 1 то левое выравнивания
+** zerofill - заполнение нулями
+** sharp - ШАРП
+** sign - знак
+** ispre - есть ли пресижн
+** spec - спецификатор
 */
 typedef struct		s_flags_specifier
 {
@@ -55,6 +59,7 @@ char				*format_parser(char *spec, t_frmt_fs *frmt, va_list arg);
 */
 
 size_t				insert_spec(t_frmt_fs *frmt, va_list arg);
+int					ft_putchar_n(char c, ssize_t n);
 
 /*
 ** INSERT STRING
@@ -67,12 +72,6 @@ size_t				ft_insert_s(t_frmt_fs *frmt, va_list arg);
 */
 
 int					ft_insert_c(t_frmt_fs *frmt, va_list arg);
-
-/*
-** втсавляем чар н раз
-*/
-
-void				ft_putchar_n(char c, int n);
 
 /*
 ** INSERT B
@@ -98,5 +97,12 @@ int					ft_abc(int n);
 
 int					ft_insert_p(t_frmt_fs *f, va_list arg);
 char				*ft_lltoa_base(long long nb, int base);
+
+/*
+** FLOAT INSERTING
+*/
+
+int					put_fl(t_frmt_fs *f, const char *fl, const char *i, size_t l);
+size_t				insert_doubles(t_frmt_fs *frtmt, va_list arg);
 
 #endif

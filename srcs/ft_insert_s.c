@@ -6,23 +6,23 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 21:22:03 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/30 20:25:29 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:37:36 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "libftprintf.h"
 
-void			ft_putchar_n(char c, int n)
+int inline		ft_putchar_n(char c, ssize_t n)
 {
-	if (n > 0)
+	int		len;
+
+	len = -1;
+	while (++len < n)
 	{
-		while (n)
-		{
-			write(1, &c, 1);
-			n--;
-		}
+		write(1, &c, 1);
 	}
+	return (len);
 }
 
 size_t			ft_print_str(t_frmt_fs *f, size_t len, size_t size, char *str)

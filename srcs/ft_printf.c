@@ -3,15 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:10:55 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/21 20:41:46 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/06/30 20:39:33 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "libftprintf.h"
+
+char	*ln_n2s_rformat(t_8b a, const int len,\
+const char filler, char *st)
+{
+	int		ind;
+
+	if (st)
+	{
+		ind = len;
+		ft_memset(st, filler, len);
+		st[ind] = 0;
+		if (!a)
+			st[ind - 1] = '0';
+		while (a && --ind > -1)
+		{
+			st[ind] = (a % 10) + 48;
+			a /= 10;
+		}
+		st[len] = 0;
+	}
+	return (st + len);
+}
 
 int		ft_printf(const char *format, ...)
 {

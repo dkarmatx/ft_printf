@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "libftprintf.h"
+#include "longnumber.h"
 
 #define test(str, value, n) printf("\n==================| %d test |==================\n", n); \
 							printf(" <-- %d\n", ft_printf(str, value)); \
@@ -10,7 +11,6 @@
 int		main(void)
 {
 
-	test("%------------7i", 0xd777, 1);
-	test("%000000000000007d", 0x45, 2);
-	test("%ls", L"„Äª", 3);
+	ft_printf("%lld\n", -9223372036854775808);
+	printf("%lld", -9223372036854775808);
 }

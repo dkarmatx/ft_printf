@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/30 20:39:59 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/02 15:16:15 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,11 @@ char				*ft_lltoa_base(long long nb, int base);
 
 int					put_fl(t_frmt_fs *f, const char *fl, const char *i, size_t l);
 size_t				insert_doubles(t_frmt_fs *frtmt, va_list arg);
+
+/*
+** INSERT percents
+*/
+
+size_t				ft_insert_percent(t_frmt_fs *f);
 
 #endif

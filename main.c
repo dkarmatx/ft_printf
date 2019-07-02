@@ -10,7 +10,12 @@
 
 int		main(void)
 {
-
-	ft_printf("%lld\n", -9223372036854775808);
-	printf("%lld", -9223372036854775808);
+	test("%10%d %d", 10, 1);
+	test("%%d %d", 10, 2);
+	test("%-10%d %d", 10, 3);
+	test("%0%d %d", 10, 4);
+	test("%010%d %d", 10, 5);
+	test("%d", 10, 6);
+	ft_printf("%d  %d  %d\n", 1, 2, 3);
+	printf("%d  %d  %d\n", 1, 2, 3);
 }

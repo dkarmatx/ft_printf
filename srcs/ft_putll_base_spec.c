@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/25 15:35:23 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/30 20:23:34 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/02 14:48:18 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ unsigned long long	get_max_dec_u(unsigned long long nb, int base)
 
 int					ft_get_base(char c)
 {
+	if (c == 'b')
+		return (2);
 	if (c == 'o' || c == 'O')
 		return (8);
 	if (c == 'x' || c == 'X')

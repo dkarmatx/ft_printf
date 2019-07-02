@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:10:55 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/30 20:39:33 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/02 16:24:39 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,7 @@ int		ft_printf(const char *format, ...)
 	{
 		write(1, inputer[0], (n[0] = inputer[1] - inputer[0]));
 		n[1] += n[0];
-		if (*(++inputer[1]) == '%' && ++n[1] && ++inputer[1])
-			write(1, "%", 1);
-		else
+		if (*(inputer[1]) == '%' && ++inputer[1])
 		{
 			inputer[1] = format_parser(inputer[1], &frmt, arg);
 			n[1] += insert_spec(&frmt, arg);

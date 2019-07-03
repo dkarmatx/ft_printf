@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 15:05:12 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/30 15:05:21 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 00:21:52 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_lnum			ln_sub_mnt(t_lnum n1, t_lnum n2)
 		++i;
 	}
 	sub.mnt[i] += n1.mnt[i] - n2.mnt[i];
-	while (!(sub.mnt[LNUM_BYTES8 - 1] & 0x8000000000000000))
+	while (!(sub.mnt[LNUM_BYTES8 - 1] & 0x8000000000000000) && (i-- > -1))
 		sub = ln_highshift(sub, 1);
 	return (sub);
 }

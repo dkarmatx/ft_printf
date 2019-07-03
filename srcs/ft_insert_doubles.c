@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 14:52:46 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/30 15:17:04 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 01:42:23 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,28 +37,24 @@ const char *fint, size_t len)
 	return (len);
 }
 
-ssize_t			check_the_infs(t_frmt_fs *f, const long double a)
+char			*check_the_infs(t_frmt_fs *f, const long double a)
 {
 	const t_8b		*mask = (t_8b *)&a;
 	const int		sig = (mask[1] & 0x8000) >> 15;
 
-	if (mask[1] & LDOUBLE_EXP_MASK == LDOUBLE_EXP_MASK)
-		if ((mask[0] << 1) && f->spec == 'F' && !sig)
-			return (write(1, "NAN", 3));
-		else if ((mask[0] << 1) && f->spec == 'f' && !sig)
-			return (write(1, "nan", 3));
-		else if ((mask[0] << 1) && f->spec == 'F' && sig)
-			return (write(1, "-NAN", 4));
-		else if ((mask[0] << 1) && f->spec == 'f' && sig)
-			return (write(1, "-nan", 4));
-		else if (!(mask[0] << 1) && f->spec == 'F' && sig)
-			return (write(1, "-INF", 4));
-		else if (!(mask[0] << 1) && f->spec == 'F' && !sig)
-			return (write(1, "INF", 3));
-		else if (!(mask[0] << 1) && f->spec == 'f' && sig)
-			return (write(1, "-inf", 4));
-		else if (!(mask[0] << 1) && f->spec == 'f' && !sig)
-			return (write(1, "inf", 3));
+	if ((mask[1] & LDOUBLE_EXP_MASK) == LDOUBLE_EXP_MASK)
+	{
+		f->precision = 0;
+		if (!(mask[0] << 1) && f->spec <= 'Z')
+			return (ft_strdup("INF"));
+		if (!(mask[0] << 1) && f->spec >= 'a')
+			return (ft_strdup("inf"));
+		f->error = 112;
+		if (f->spec <= 'Z')
+			return (ft_strdup("NAN"));
+		if (f->spec >= 'a')
+			return (ft_strdup("nan"));
+	}
 	return (0);
 }
 
@@ -70,18 +66,17 @@ ssize_t			print_spc_f(t_frmt_fs *f, const long double a)
 
 	over = 0;
 	str[1] = 0;
-	if ((len = check_the_infs(f, a)))
-		return (len);
-	if (f->precision)
+	if (!(str[0] = check_the_infs(f, a)) && f->precision)
 		str[1] = ln_string_fl_part(f->precision, ln_from_ldouble(a), &over);
 	else if ((((long double)(a - (size_t)a) >= 0.5L && (size_t)a % 2) ||\
 	(!((size_t)a % 2) && (long double)(a - (size_t)a) > 0.5L)) &&\
-	(((*(((size_t *)&a) + 1) & LDOUBLE_EXP_MASK) - LDOUBLE_EXP_SHIFT) < 64))
+	(((*(((size_t *)&a) + 1) & LDOUBLE_EXP_MASK) - LDOUBLE_EXP_SHIFT) < 64) &&\
+	!str[0])
 		over = 1;
-	str[0] = ln_string_int_part(a, over);
-	len = f->ispre ? f->precision + 1 : 0;
+	str[0] = str[0] ? str[0] : ln_string_int_part(a, over);
+	len = f->precision ? f->precision + 1 : 0;
 	len += ft_strlen(str[0]) + (a < 0 || f->sign > 0 ? 1 : 0);
-	f->error = (a < 0);
+	f->error = f->error != 112 ? *((t_8b *)&a + 1) >> 15 : 0;
 	len = put_fl(f, str[1], str[0], len);
 	free(str[0]);
 	str[1] ? free(str[1]) : 0;

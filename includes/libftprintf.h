@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libftprintf.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/30 20:39:59 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/04 02:04:37 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,11 @@ char				*ft_lltoa_base(long long nb, int base);
 
 int					put_fl(t_frmt_fs *f, const char *fl, const char *i, size_t l);
 size_t				insert_doubles(t_frmt_fs *frtmt, va_list arg);
+
+/*
+** NON_PRINTABLE_CHARACTER
+*/
+
+ssize_t				ft_insert_r(t_frmt_fs *f, va_list arg);
 
 #endif

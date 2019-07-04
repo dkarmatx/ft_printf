@@ -10,7 +10,5 @@
 
 int		main(void)
 {
-
-	ft_printf("%lld\n", -9223372036854775808);
-	printf("%lld", -9223372036854775808);
+	ft_printf("%R\n", "\t\t\t");
 }

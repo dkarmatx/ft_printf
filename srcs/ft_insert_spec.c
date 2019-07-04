@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_insert_spec.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:53:55 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/30 20:36:34 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/04 02:03:12 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ size_t		insert_spec(t_frmt_fs *frmt, va_list arg)
 		return (ft_insert_c(frmt, arg));
 	else if (frmt->type == 5)
 		return (ft_insert_p(frmt, arg));
+	else if (frmt->type == 27)
+		return (ft_insert_r(frmt, arg));
 	else
 		return (0);
 }

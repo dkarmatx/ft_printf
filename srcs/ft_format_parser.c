@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_format_parser.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:11:47 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/30 20:31:25 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/04 02:21:37 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static int	type_mode(char *sc)
 		return (4);
 	else if (*sc == 'p')
 		return (5);
+	else if (*sc == 'r' || *sc == 'R')
+		return (27);
 	return (0);
 }
 

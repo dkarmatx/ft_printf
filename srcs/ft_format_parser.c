@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:11:47 by hgranule          #+#    #+#             */
-/*   Updated: 2019/07/04 02:21:37 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 04:29:58 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*wp_parser(char *sc, t_frmt_fs *frmt, va_list arg)
 
 static int	type_mode(char *sc)
 {
-	if (ft_memchr("dDioOxXuU", (int)(*sc), 10))
+	if (ft_memchr("dDioOxXuUb", (int)(*sc), 11))
 		return (1);
 	else if (ft_memchr("aAeEfFgG", (int)(*sc), 8))
 		return (2);
@@ -66,6 +66,8 @@ static int	type_mode(char *sc)
 		return (5);
 	else if (*sc == 'r' || *sc == 'R')
 		return (27);
+	else if (*sc == '%')
+		return (6);
 	return (0);
 }
 

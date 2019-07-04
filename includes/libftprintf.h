@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/07/04 02:04:37 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 04:29:30 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,11 @@ ssize_t				insert_doubles(t_frmt_fs *frtmt, va_list arg);
 */
 
 ssize_t				ft_insert_r(t_frmt_fs *f, va_list arg);
+
+/*
+** INSERT percents
+*/
+
+size_t				ft_insert_percent(t_frmt_fs *f);
 
 #endif

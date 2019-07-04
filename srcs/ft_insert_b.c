@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/23 13:10:50 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/30 20:25:42 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/02 15:14:44 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ int					ft_parse_spec(t_frmt_fs *f, int fl, long long n)
 	else if (fl == 1 && f->sharp
 	&& n != 0 && f->spec == 'X')
 		write(1, "0X", 2);
+	else if (fl == 1 && f->sharp
+	&& n != 0 && f->spec == 'b')
+		write(1, "b", 1);
+	else if (f->spec == 'b' && n != 0 && f->sharp)
+		return (1);
 	else if ((f->spec == 'o' || f->spec == 'O') && n != 0 && f->sharp)
 		return (1);
 	else if ((f->spec == 'X' || f->spec == 'x') && n != 0 && f->sharp)
@@ -32,19 +37,19 @@ int					ft_parse_spec(t_frmt_fs *f, int fl, long long n)
 
 long long			ft_get_num(t_frmt_fs *f, va_list arg)
 {
-	if (f->size == 1 && ft_memchr("uoxX", (int)f->spec, 4))
+	if (f->size == 1 && ft_memchr("uoxXb", (int)f->spec, 5))
 		return ((unsigned char)va_arg(arg, int));
 	if (f->size == 1)
 		return ((char)va_arg(arg, int));
-	else if (f->size == 2 && ft_memchr("uoxX", (int)f->spec, 4))
+	else if (f->size == 2 && ft_memchr("uoxXb", (int)f->spec, 5))
 		return (va_arg(arg, unsigned int));
 	else if (f->size == 2)
 		return ((short)va_arg(arg, int));
-	else if (f->size == 4 && ft_memchr("uoxX", (int)f->spec, 4))
+	else if (f->size == 4 && ft_memchr("uoxXb", (int)f->spec, 5))
 		return ((unsigned)va_arg(arg, int));
 	else if (f->size == 4 && ft_memchr("di", (int)f->spec, 2))
 		return (va_arg(arg, int));
-	else if (f->size == 8 || ft_memchr("uUoOxX", (int)f->spec, 6))
+	else if (f->size == 8 || ft_memchr("uUoOxXb", (int)f->spec, 7))
 		return (va_arg(arg, unsigned long long));
 	else if (f->size == 8 || f->spec == 'D')
 		return (va_arg(arg, long long));
@@ -53,7 +58,7 @@ long long			ft_get_num(t_frmt_fs *f, va_list arg)
 
 static void			ft_print_b_else(t_frmt_fs *f, long long n, char *s, int l)
 {
-	if ((!ft_strcmp(s, "-") && !ft_memchr("uUoOxX", (int)f->spec, 6))
+	if ((!ft_strcmp(s, "-") && !ft_memchr("uUoOxXb", (int)f->spec, 7))
 	|| f->sign == 1)
 		write(1, s, 1);
 	ft_parse_spec(f, 1, n);
@@ -63,7 +68,7 @@ static void			ft_print_b_else(t_frmt_fs *f, long long n, char *s, int l)
 	(f->precision > l ? f->precision : l));
 }
 
-static void			ft_print_d(t_frmt_fs *f, long long n, char *sign, int len)
+static void			ft_print_b(t_frmt_fs *f, long long n, char *sign, int len)
 {
 	int	fl;
 	int	spc;
@@ -74,13 +79,13 @@ static void			ft_print_d(t_frmt_fs *f, long long n, char *sign, int len)
 		{
 			if (((!f->ispre) && f->zerofill
 			&& (*sign == '-' || f->sign == 1) && (fl = 1))
-			&& !ft_memchr("uUoOxX", (int)f->spec, 6))
+			&& !ft_memchr("uUoOxXb", (int)f->spec, 7))
 				write(1, sign, 1);
 			spc = ft_parse_spec(f, f->zerofill && !f->ispre, n);
 			ft_putchar_n(f->zerofill && !f->ispre ? '0' : ' ', f->field_len -\
 			(f->precision + spc > len ? f->precision + spc : len));
 		}
-		if (fl == 0 && !ft_memchr("uUoOxX", (int)f->spec, 6)
+		if (fl == 0 && !ft_memchr("uUoOxXb", (int)f->spec, 7)
 		&& (*sign == '-' || f->sign == 1))
 			write(1, sign, 1);
 		ft_parse_spec(f, !f->zerofill || (f->field_len <= len) || f->ispre, n);
@@ -110,7 +115,7 @@ int					ft_insert_b(t_frmt_fs *f, va_list arg)
 		return ((int)write(1, f->sign == 1 ? "+" : " ", 1));
 	if (f->sign == 2 && !ft_strcmp(sign, "+"))
 		write(1, f->sign == 1 ? "+" : " ", 1);
-	ft_print_d(f, n, sign, len);
+	ft_print_b(f, n, sign, len);
 	spec_len = ft_parse_spec(f, 0, n);
 	(spec_len == 1) ? --f->precision : 0;
 	len - spec_len < f->precision ? len = f->precision + spec_len : 0;

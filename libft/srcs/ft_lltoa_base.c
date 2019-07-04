@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lltoa_base.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 22:39:44 by hgranule          #+#    #+#             */
-/*   Updated: 2019/05/03 06:27:46 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 17:00:04 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_string.h"
 #include <stdlib.h>
 
-static long long	get_max_dec(long long nb, int base)
+static long long	get_max_dec(__int128_t nb, int base)
 {
 	long long dec;
 
@@ -24,7 +24,7 @@ static long long	get_max_dec(long long nb, int base)
 	return (dec);
 }
 
-static size_t		count_ll_digits(long long nb, int base)
+static size_t		count_ll_digits(__int128_t nb, int base)
 {
 	int		count;
 
@@ -38,7 +38,7 @@ static size_t		count_ll_digits(long long nb, int base)
 	return (count);
 }
 
-static void			push_number(char **number, long long nb, int base, int *i)
+static void			push_number(char **number, __int128_t nb, int base, int *i)
 {
 	long long	dec;
 	int			cur;
@@ -66,7 +66,7 @@ static void			push_number(char **number, long long nb, int base, int *i)
 	}
 }
 
-char				*ft_lltoa_base(long long nb, int base)
+char				*ft_lltoa_base(__int128_t nb, int base)
 {
 	int			i;
 	char		*number;

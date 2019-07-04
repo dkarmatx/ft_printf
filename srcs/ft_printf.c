@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:10:55 by hgranule          #+#    #+#             */
-/*   Updated: 2019/07/02 16:24:39 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/04 17:04:16 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,3 @@ int		ft_printf(const char *format, ...)
 	va_end(arg);
 	return ((int)(n[1] + n[0]));
 }
-
-/*
-** fit : 0 -> Current format : 1-> END OF  format string : 2-> current buffer
-*/

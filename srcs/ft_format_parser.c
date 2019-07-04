@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_format_parser.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:11:47 by hgranule          #+#    #+#             */
-/*   Updated: 2019/07/04 11:03:13 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 17:23:45 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	*wp_parser(char *sc, t_frmt_fs *frmt, va_list arg)
 
 static int	type_mode(char *sc)
 {
-	if (ft_memchr("dDioOxXuUb", (int)(*sc), 11))
+	if (ft_memchr("dDioOxXuUb", (int)(*sc), 10))
 		return (1);
 	else if (ft_memchr("aAeEfFgG", (int)(*sc), 8))
 		return (2);
@@ -72,6 +72,8 @@ static int	type_mode(char *sc)
 		return (27);
 	else if (*sc == '%')
 		return (6);
+	else if (ft_memchr("yqwt[{]}jkm<>?", *sc, 15))
+		return (-1);
 	return (0);
 }
 
@@ -80,7 +82,7 @@ static char	*type_parser(char *sc, t_frmt_fs *f)
 	long double	m;
 
 	f->size = 4;
-	while (!(f->type = type_mode(sc)))
+	while (!(f->type = type_mode(sc)) && *sc && f->type != -1)
 	{
 		!(ft_strncmp("hh", sc, 2)) && f->size < (int)sizeof(long)\
 		? f->size = sizeof(char) : 0;
@@ -100,7 +102,7 @@ static char	*type_parser(char *sc, t_frmt_fs *f)
 	f->type == 2 && f->size < 8 ? f->size = 8 : 0;
 	f->type == 3 || f->type == 5 ? f->size = 8 : 0;
 	f->type == 4 ? f->size = 1 : 0;
-	++sc;
+	*sc && f->type != -1 ? ++sc : 0;
 	return (sc);
 }
 

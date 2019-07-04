@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_help_insertn_b.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/28 14:13:37 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/07/04 12:40:18 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 14:23:00 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,12 @@ int					ft_kostyl_zero(t_frmt_fs *f, int len)
 	(!f->orient && f->sharp && ft_memchr("oO", \
 	f->spec, 2)) ? write(1, "0", 1) : 0;
 	return (ft_return_insert_b(f, len - 1));
+}
+
+int					ft_kostyl_sign(t_frmt_fs *f)
+{
+	f->orient ? write(1, f->sign == 1 ? "+" : " ", 1) : 0;
+	ft_putchar_n(' ', f->field_len - 1);
+	!f->orient ? write(1, f->sign == 1 ? "+" : " ", 1) : 0;
+	return (f->field_len ? f->field_len : 1);
 }

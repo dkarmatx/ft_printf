@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libftprintf.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 03:02:48 by hgranule          #+#    #+#             */
-/*   Updated: 2019/07/04 07:07:03 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 17:00:55 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int					ft_get_len(long long *n, int base, t_frmt_fs *f);
 int					ft_parse_spec(t_frmt_fs *f, int fl, long long n);
 int					ft_get_base(char c);
 int					ft_kostyl_zero(t_frmt_fs *f, int len);
+int					ft_kostyl_sign(t_frmt_fs *f);
 int					ft_abc(int n);
 
 /*
@@ -96,7 +97,6 @@ int					ft_abc(int n);
 */
 
 int					ft_insert_p(t_frmt_fs *f, va_list arg);
-char				*ft_lltoa_base(long long nb, int base);
 
 /*
 ** FLOAT INSERTING

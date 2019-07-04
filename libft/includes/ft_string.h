@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_string.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 20:57:10 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/18 08:10:16 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 17:00:27 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
-char				*ft_lltoa_base(long long nb, int base);
+char				*ft_lltoa_base(__int128_t nb, int base);
 char				*ft_itoa(int n);
 long long			ft_atoll_base(const char *str, int base);
 int					ft_atoi_base(const char *str, int base);

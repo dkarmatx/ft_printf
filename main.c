@@ -1,20 +1,24 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "libftprintf.h"
-#include "longnumber.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/07/04 13:21:33 by gdaemoni          #+#    #+#             */
+/*   Updated: 2019/07/04 17:24:10 by gdaemoni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#define test(str, value, n) printf("\n==================| %d test |==================\n", n); \
-							printf(" <-- %d\n", ft_printf(str, value)); \
-							printf(" <-- %d\n", printf(str, value));
+# include <stdarg.h>
+# include "libft.h"
+# include "longnumber.h"
+# include "libftprintf.h"
 
-int		main(void)
+
+int main()
 {
-	int strlen;
-
-	printf("<%d\n" , ft_printf("%f|%f", 1.0, 1.0));
-	printf("<%d\n" , printf("%.2147483649f|%2147483649f", 1.0, 1.0));
+	unsigned long long ULLONG_MAX = +18446744073709551615;
+	printf("<-- %d\n", ft_printf("%-#--.0---0-m--{};,;;[];;;y-----[ld"), 10);
+	printf("<-- %d\n", printf("%-#-.0---000m---};;,;;;[];;y-----[ld"), 10);
 }
-
-//0.000000|0.000000|+0.000000| 0.000000|0.000000|0.000000<55
-//0.000000|0.000000|+0.000000| 0.000000|0.000000|0.000000<55

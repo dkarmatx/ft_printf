@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/28 14:13:37 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/07/04 14:23:00 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/04 17:37:42 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,10 @@ int					ft_kostyl_zero(t_frmt_fs *f, int len)
 
 int					ft_kostyl_sign(t_frmt_fs *f)
 {
-	f->orient ? write(1, f->sign == 1 ? "+" : " ", 1) : 0;
+	if (f->orient)
+		write(1, f->sign == 1 ? "+" : " ", 1);
 	ft_putchar_n(' ', f->field_len - 1);
-	!f->orient ? write(1, f->sign == 1 ? "+" : " ", 1) : 0;
+	if (!f->orient)
+		write(1, f->sign == 1 ? "+" : " ", 1);
 	return (f->field_len ? f->field_len : 1);
 }

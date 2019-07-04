@@ -6,7 +6,7 @@
 /*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/23 13:10:50 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/07/04 16:40:07 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/04 17:38:26 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ static void			ft_print_b_else(t_frmt_fs *f, long long n, char *s, int l)
 
 static void			ft_print_b(t_frmt_fs *f, long long n, char *sign, int len)
 {
-	int	fl;
-	int	spc[2];
+	int		fl;
+	int		spc[2];
 
 	if ((fl = 0) == 0 && f->orient)
 		return (ft_print_b_else(f, n, sign, len));
@@ -103,7 +103,6 @@ static void			ft_print_b(t_frmt_fs *f, long long n, char *sign, int len)
 	&& n != 0 ? f->precision - len + 2 : f->precision - len);
 	ft_putll_base_spec(n, f->spec);
 }
-	
 
 int					ft_insert_b(t_frmt_fs *f, va_list arg)
 {

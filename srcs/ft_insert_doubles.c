@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_insert_doubles.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 14:52:46 by hgranule          #+#    #+#             */
-/*   Updated: 2019/07/04 12:56:49 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 19:16:08 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ const char *fint, size_t len)
 char			*check_the_infs(t_frmt_fs *f, const long double a)
 {
 	const t_8b		*mask = (t_8b *)&a;
-	const int		sig = (mask[1] & 0x8000) >> 15;
 
 	if ((mask[1] & LDOUBLE_EXP_MASK) == LDOUBLE_EXP_MASK)
 	{

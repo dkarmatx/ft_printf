@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_help_insertn_b.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/28 14:13:37 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/30 20:20:22 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/04 12:40:18 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,17 @@ int					ft_get_len_u(unsigned long long nb, int base, t_frmt_fs *f)
 int					ft_get_len(long long *n, int base, t_frmt_fs *f)
 {
 	int			rez;
-	long long	cpy;
+	__int128_t	cpy;
+	__int128_t	a;
 
 	if (ft_memchr("uUoOxX", (int)f->spec, 6))
 		return (ft_get_len_u((*n), base, f));
+	a = *n;
 	rez = 0;
-	cpy = (*n);
-	if ((*n) <= 0)
+	cpy = a;
+	if (a <= 0)
 	{
-		(*n) *= -1;
+		a *= -1;
 		cpy *= -1;
 		++rez;
 	}
@@ -65,16 +67,18 @@ int					ft_get_len(long long *n, int base, t_frmt_fs *f)
 		++rez;
 	}
 	if (f->sharp)
-		if ((*n) != 0)
-			rez += ft_parse_spec(f, 0, (*n));
+		if (a != 0)
+			rez += ft_parse_spec(f, 0, *n);
 	return (rez);
 }
 
 int					ft_kostyl_zero(t_frmt_fs *f, int len)
 {
-	(f->spec == 'O' || f->spec == 'o') ? ++len : 0;
-	(f->orient && (f->spec == 'O' || f->spec == 'o')) ? write(1, "0", 1) : 0;
+	((f->spec == 'O' || f->spec == 'o') && f->sharp) ? ++len : 0;
+	(f->orient && f->sharp && ft_memchr("oO", \
+	f->spec, 2)) ? write(1, "0", 1) : 0;
 	ft_putchar_n(' ', f->field_len - (len - 1));
-	(!f->orient && (f->spec == 'O' || f->spec == 'o')) ? write(1, "0", 1) : 0;
+	(!f->orient && f->sharp && ft_memchr("oO", \
+	f->spec, 2)) ? write(1, "0", 1) : 0;
 	return (ft_return_insert_b(f, len - 1));
 }

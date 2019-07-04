@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_insert_s.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 21:22:03 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/06/30 21:32:46 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/04 11:10:11 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,26 @@ int inline		ft_putchar_n(char c, ssize_t n)
 
 size_t			ft_print_str(t_frmt_fs *f, size_t len, size_t size, char *str)
 {
+	int		plen;
+
+	plen = 0;
 	if (!f->orient)
 	{
-		ft_putchar_n(f->zerofill ? '0' : ' ',
+		plen += ft_putchar_n(f->zerofill ? '0' : ' ',
 		(unsigned)f->precision > len || !f->ispre \
 		? size - len : size - f->precision);
-		write(1, str, f->ispre && (unsigned)f->precision \
+		plen += write(1, str, f->ispre && (unsigned)f->precision \
 		< len ? f->precision : len);
 	}
 	else
 	{
-		write(1, str, f->ispre && (unsigned)f->precision \
+		plen += write(1, str, f->ispre && (unsigned)f->precision \
 		< len ? f->precision : len);
-		ft_putchar_n(f->zerofill ? '0' : ' ',
+		plen += ft_putchar_n(f->zerofill ? '0' : ' ',
 		(unsigned)f->precision > len || !f->ispre \
 		? size - len : size - f->precision);
 	}
-	if (size >= len)
-		return (size);
-	else if (!f->ispre || len < (unsigned)f->precision)
-		return (len);
-	else
-		return (f->precision);
+	return (plen);
 }
 
 size_t			ft_insert_s(t_frmt_fs *f, va_list arg)

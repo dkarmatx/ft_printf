@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+         #
+#    By: hgranule <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/06/21 20:03:07 by hgranule          #+#    #+#              #
-#    Updated: 2019/06/30 21:35:07 by gdaemoni         ###   ########.fr        #
+#    Updated: 2019/07/04 08:43:49 by hgranule         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME=libftprintf.a
 all: $(NAME)
 
 $(NAME):
-	gcc -I libs/*/includes -I includes libs/*/srcs/*.c srcs/*.c -c
+	gcc -I libft/includes -I includes libft/srcs/*.c srcs/*.c -c
 	ar rc libftprintf.a *.o
 
 clean:
@@ -27,4 +27,4 @@ fclean: clean
 re: fclean all
 
 debug:
-	gcc -I libs/*/includes -I includes libs/*/srcs/*.c srcs/*.c main.c -g
+	gcc -I libft/includes -I includes libft/srcs/*.c srcs/*.c main.c -g

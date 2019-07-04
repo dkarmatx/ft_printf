@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putll_base_spec.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/25 15:35:23 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/07/02 14:48:18 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/04 07:11:16 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@
 long long			get_max_dec(long long nb, int base)
 {
 	long long			dec;
+	__int128_t			a;
 
 	dec = 1;
-	nb < 0 ? nb *= -1 : nb;
-	while ((dec * base < nb) && (dec * base > 0))
+	a = nb;
+	a < 0 ? a *= -1 : a;
+	while ((dec * base < a) && (dec * base > 0))
 		dec *= base;
 	return (dec);
 }
@@ -68,9 +70,9 @@ void				ft_putull_base_spec(unsigned long long nb, char spec)
 	}
 }
 
-void				ft_putll_base_spec(long long nb, char spec)
+void				ft_putll_base_spec(__int128_t nb, char spec)
 {
-	long long		dec;
+	__int128_t		dec;
 	int				cur;
 	char			*alphu;
 	char			*alph;
@@ -82,6 +84,7 @@ void				ft_putll_base_spec(long long nb, char spec)
 	dec = get_max_dec(nb, base);
 	if (!ft_memchr("uUoOxX", spec, 6))
 	{
+		(nb < 0) ? nb *= -1 : 0;
 		while (dec > 0)
 		{
 			if ((cur = nb / dec) == base)

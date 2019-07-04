@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/30 14:59:23 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/30 15:00:49 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 12:30:52 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,14 @@ char			*ln_string_fl_part(int prec, t_lnum lnum, char *over)
 
 	i = 0;
 	str = ft_strnew(prec + 2);
-	while (prec-- > -1)
+	while (prec-- > -1 && str)
 	{
 		lnum = ln_multint_mnt(ln_sub_mnt(lnum, \
 		ln_from_ldouble((long double)ln_to_ulong(lnum))), 10);
 		str[i++] = ln_to_ulong(lnum) + '0';
 		str[i - 1] = str[i - 1] == '/' ? '0' : str[i - 1];
 	}
-	if (str[(j = --i)] >= '5')
+	if (str && str[(j = --i)] >= '5')
 	{
 		while (i > 0 && str[--i] == '9')
 			str[i] = '0';
@@ -79,6 +79,6 @@ char			*ln_string_fl_part(int prec, t_lnum lnum, char *over)
 		else
 			*over = 1;
 	}
-	str[j] = 0;
+	str ? str[j] = 0 : 0;
 	return (str);
 }

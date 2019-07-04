@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_insert_b.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/23 13:10:50 by gdaemoni          #+#    #+#             */
-/*   Updated: 2019/07/02 15:14:44 by gdaemoni         ###   ########.fr       */
+/*   Updated: 2019/07/04 09:00:18 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ long long			ft_get_num(t_frmt_fs *f, va_list arg)
 	if (f->size == 1)
 		return ((char)va_arg(arg, int));
 	else if (f->size == 2 && ft_memchr("uoxXb", (int)f->spec, 5))
-		return (va_arg(arg, unsigned int));
+		return ((unsigned short)va_arg(arg, int));
 	else if (f->size == 2)
 		return ((short)va_arg(arg, int));
 	else if (f->size == 4 && ft_memchr("uoxXb", (int)f->spec, 5))
@@ -107,14 +107,14 @@ int					ft_insert_b(t_frmt_fs *f, va_list arg)
 	n = ft_get_num(f, arg);
 	sign = n >= 0 ? "+" : "-";
 	len = ft_get_len(&n, ft_get_base(f->spec), f);
-	len += (int)(f->sign && !ft_strcmp(sign, "+"));
+	len += (int)(f->sign && *sign == '+' && !ft_memchr("uUoOxXb", f->spec, 7));
 	f->precision += f->precision && (f->sign || !ft_strcmp(sign, "-")) ? 1 : 0;
 	if (f->ispre && !f->precision && !n && !f->sign)
 		return (ft_kostyl_zero(f, len));
 	if (n == 0 && f->ispre && !f->precision && f->sign)
 		return ((int)write(1, f->sign == 1 ? "+" : " ", 1));
-	if (f->sign == 2 && !ft_strcmp(sign, "+"))
-		write(1, f->sign == 1 ? "+" : " ", 1);
+	if (f->sign == 2 && *sign == '+' && !ft_memchr("uUoOxXb", f->spec, 7))
+		write(1, " ", 1);
 	ft_print_b(f, n, sign, len);
 	spec_len = ft_parse_spec(f, 0, n);
 	(spec_len == 1) ? --f->precision : 0;

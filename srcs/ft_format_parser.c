@@ -6,7 +6,7 @@
 /*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/21 20:11:47 by hgranule          #+#    #+#             */
-/*   Updated: 2019/07/04 04:29:58 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 11:03:13 by hgranule         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	*flag_parser(char *sc, t_frmt_fs *frmt)
 static char	*wp_parser(char *sc, t_frmt_fs *frmt, va_list arg)
 {
 	if (*sc == '*' && sc++)
-		frmt->field_len = ft_abc(va_arg(arg, int));
+		frmt->field_len = va_arg(arg, int);
 	else if ((frmt->field_len = ft_abc(ft_atoi(sc))))
 		while (ft_isdigit(*sc))
 			sc++;
@@ -44,11 +44,15 @@ static char	*wp_parser(char *sc, t_frmt_fs *frmt, va_list arg)
 	{
 		frmt->ispre = 1;
 		if (*(++sc) == '*' && sc++)
-			frmt->precision = ft_abc(va_arg(arg, int));
+			frmt->precision = va_arg(arg, int);
 		else if ((frmt->precision = ft_abc(ft_atoi(sc))))
 			while (ft_isdigit(*sc))
 				sc++;
 	}
+	if (frmt->field_len < 0 && (frmt->field_len *= -1))
+		frmt->orient = 1;
+	if (frmt->precision < 0 && !(frmt->precision = 0))
+		frmt->ispre = 0;
 	return (sc);
 }
 

@@ -16,6 +16,6 @@ int		main(void)
 	test("%0%d %d", 10, 4);
 	test("%010%d %d", 10, 5);
 	test("%d", 10, 6);
-	ft_printf("%d  %d  %d\n", 1, 2, 3);
-	printf("%d  %d  %d\n", 1, 2, 3);
+	ft_printf("%d %% %10% %d  %d\n", 1, 2, 3);
+	printf("%d %% %10% %d  %d\n", 1, 2, 3);
 }

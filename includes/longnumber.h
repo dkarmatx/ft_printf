@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   longnumber.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgranule <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gdaemoni <gdaemoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/22 11:52:11 by hgranule          #+#    #+#             */
-/*   Updated: 2019/06/30 15:20:49 by hgranule         ###   ########.fr       */
+/*   Updated: 2019/07/04 19:26:51 by gdaemoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LONGNUMBER_H
 # define LONGNUMBER_H
 
-# include "libft.h"
 # include <stdlib.h>
 # include <unistd.h>
+# include "libft.h"
 
 typedef unsigned long	t_8b;
 typedef unsigned int	t_4b;

@@ -103,7 +103,7 @@ char				*ft_lltoa_base(long long nb, int base);
 */
 
 int					put_fl(t_frmt_fs *f, const char *fl, const char *i, size_t l);
-size_t				insert_doubles(t_frmt_fs *frtmt, va_list arg);
+ssize_t				insert_doubles(t_frmt_fs *frtmt, va_list arg);
 
 /*
 ** NON_PRINTABLE_CHARACTER
